@@ -1,0 +1,38 @@
+{
+  "name": "musk-ox",
+  "version": "2.0.1",
+  "description": "MuskOx is an easy to use, event-driven, and efficient asset preloader for the browser.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/.bin/rollup -c && node test/server.js",
+    "rollup": "node_modules/.bin/rollup -c",
+    "docs": "node_modules/.bin/jsdoc muskox.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/robertcorponoi/musk-ox"
+  },
+  "keywords": [
+    "asset",
+    "assets",
+    "images",
+    "audio",
+    "text",
+    "video",
+    "json",
+    "binary",
+    "load",
+    "preload"
+  ],
+  "author": "Robert Corponoi",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "rollup": "^1.1.0",
+    "sinon": "^6.3.5"
+  },
+  "dependencies": {
+    "eventverse": "^0.1.0"
+  }
+}
