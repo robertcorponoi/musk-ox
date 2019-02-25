@@ -7,22 +7,24 @@
 <p align="center">MuskOx is an easy to use, event-driven, and efficient asset preloader for the browser.<p>
 
 <div align="center">
-	<img src="https://img.shields.io/npm/v/musk-ox.svg?style=flat-square">
+	<!-- <a href="https://www.npmjs.com/package/musk-ox" target="__blank">
+		<img src="https://img.shields.io/npm/v/musk-ox.svg?style=flat-square">
+	</a>
 	<img src="https://img.shields.io/david/robertcorponoi/musk-ox.svg?style=flat-square">
-	<img src="https://img.shields.io/gitter/room/robertcorponoi/musk-ox.svg?style=flat-square">
+	<a href="https://gitter.im/robertcorponoi/community?utm_source=share-link&utm_medium=link&utm_campaign=share-link" target="__blank">
+		<img src="https://img.shields.io/gitter/room/robertcorponoi/musk-ox.svg?style=flat-square">
+	</a> -->
 </div>
 
 ## **Installation**
 
-MuskOx is meant to be used as an ES6 moudle.
+MuskOx is shipped as an ES6 module.
 
 To install MuskOx through npm, simply use the following command:
 
 ```
-$ npm install --save musk-ox
+$ npm install musk-ox
 ```
-
-Otherwise you can download the muskox.js file and reference that.
 
 ## **Usage**
 
@@ -40,11 +42,11 @@ After importing MuskOx, a new instance can be initialized like so:
 const ox = new MuskOx();
 ```
 
-There is also currently one initialization option that allows you to specify a global cross origin policy for loading images from an external source. This is useful if you have a lot of assets coming from a single external source. If no value is specified, then it is left null and not used.
+There is also currently one initialization parameter that allows you to specify a global cross origin policy for loading images from an external source. This is useful if you have a lot of assets coming from a single external source. If no value is specified, then it is left null and not used.
 
 | param       | type   | description                                                      | default |
 |-------------|--------|------------------------------------------------------------------|---------|
-| crossOrigin | string | A cross origin policy to set on all assets that use cross origin | null    |
+| crossOrigin | string | A cross origin policy to set on all assets that use cross origin | ''      |
 
 ## **Usage**
 
@@ -53,8 +55,6 @@ The MuskOx asset loading system is split into three steps: defining assets to lo
 ## **Step 1: Defining Assets to Load**
 
 The first step in using MuskOx involves defining the assets that need to be loaded. As of current, MuskOx supports loading images, audio, video, text, binary, and JSON assets. Assets defined during the loading phase are set to a queue that will process when the `start` method is called.
-
-Using the instance created above, we can use the loading functionality by accessing `ox.load` and then using the appropriate method for loading the desired asset.
 
 ### **image**
 
@@ -67,7 +67,7 @@ Adds an image asset to the load queue.
 | replace | boolean | If set to true, this image asset will replace an existing image asset with the same key | false   |
 
 ```js
-ox.load.image('star', './images/star.png');
+ox.image('star', './images/star.png');
 ```
 
 ### **audio**
@@ -83,13 +83,13 @@ Adds an audio asset to the load queue.
 Using a single source:
 
 ```js
-ox.load.audio('podcast', './recordings/2019-01-01.m4a');
+ox.audio('podcast', './recordings/2019-01-01.m4a');
 ```
 
 Using fallback sources:
 
 ```js
-ox.load.audio('podcast', ['./recordings/2019-01-01.m4a', './recordings/2019-01-01.wav']);
+ox.audio('podcast', ['./recordings/2019-01-01.m4a', './recordings/2019-01-01.wav']);
 ```
 
 ### **video**
@@ -105,13 +105,13 @@ Adds a video asset to the load queue.
 Using a single source:
 
 ```js
-ox.load.video('stream', './recordings/stardew-valley-1.m4a');
+ox.video('stream', './recordings/stardew-valley-1.m4a');
 ```
 
 Using fallback sources:
 
 ```js
-ox.load.video('stream', ['./recordings/stardew-valley-1.mp4', './recordings/stardew-valley-1.webm']);
+ox.video('stream', ['./recordings/stardew-valley-1.mp4', './recordings/stardew-valley-1.webm']);
 ```
 
 ### **text**
@@ -125,7 +125,7 @@ Adds a text asset to the load queue.
 | replace | boolean | If set to true, this text asset will replace an existing text asset with the same key   | false   |
 
 ```js
-ox.load.text('bio', './documents/biography.txt');
+ox.text('bio', './documents/biography.txt');
 ```
 
 ### **binary**
@@ -139,7 +139,7 @@ Adds a binary asset to the load queue. Any file provided to this will be turned 
 | replace | boolean | If set to true, this binary asset will replace an existing binary asset with the same key   | false   |
 
 ```js
-ox.load.binary('bio', './documents/biography.txt');
+ox.binary('bio', './documents/biography.txt');
 ```
 
 ### **json**
@@ -153,7 +153,7 @@ Adds a JSON asset to the load queue. The JSON will be stored as a parsed object.
 | replace | boolean | If set to true, this JSON asset will replace an existing JSON asset with the same key       | false   |
 
 ```js
-ox.load.json('movies', './documents/favorite-movies.json');
+ox.json('movies', './documents/favorite-movies.json');
 ```
 
 ## **Step 2: Start Loading**
@@ -180,14 +180,14 @@ Here is an example of how to listen to the `load-complete` event:
 ox.on('load-complete', () => {
 
 	// You can start using assets here.
-	const star = ox.get.image('star');
+	const star = ox.fetch.image('star');
 
 	document.body.appendChild(star);
 
 });
 ```
 
-Retrieving assets from the cache is made possible through the `get` methods. By using the method that corresponds to the asset type and
+Retrieving assets from the cache is made possible through the `fetch` methods. By using the method that corresponds to the asset type and
 the asset key, you can easily retrieve any saved asset.
 
 ### **image**
@@ -199,7 +199,7 @@ Get a saved image asset from the cache.
 | key   | string | The key assigned to the image asset when loading it |         |
 
 ```js
-const star = ox.get.image('star');
+const star = ox.fetch.image('star');
 ```
 
 ### **audio**
@@ -211,7 +211,7 @@ Get a saved audio asset from the cache.
 | key   | string | The key assigned to the audio asset when loading it |         |
 
 ```js
-const podcast = ox.get.audio('podcast');
+const podcast = ox.fetch.audio('podcast');
 ```
 
 ### **video**
@@ -223,7 +223,7 @@ Get a saved video asset from the cache.
 | key   | string | The key assigned to the video asset when loading it |         |
 
 ```js
-const stream = ox.get.video('stream');
+const stream = ox.fetch.video('stream');
 ```
 
 ### **text**
@@ -235,7 +235,7 @@ Get a saved text asset from the cache.
 | key   | string | The key assigned to the text asset when loading it  |         |
 
 ```js
-const bio = ox.get.text('bio');
+const bio = ox.fetch.text('bio');
 ```
 
 ### **binary**
@@ -247,7 +247,7 @@ Get a saved binary asset from the cache.
 | key   | string | The key assigned to the binary asset when loading it |         |
 
 ```js
-const bio = ox.get.binary('bio');
+const bio = ox.fetch.binary('bio');
 ```
 
 ### **json**
@@ -259,5 +259,5 @@ Get a saved JSON asset from the cache.
 | key   | string | The key assigned to the JSON asset when loading it |         |
 
 ```js
-const movies = ox.get.json('movies');
+const movies = ox.fetch.json('movies');
 ```

@@ -1,90 +1,93 @@
 'use strict'
 
-import Asset from '../asset/Asset.js';
-import { getPlayableMedia } from '../utils/media.js';
+/// <reference path='../interfaces/Asset.ts' />
+
+import Fetch from './fetch/Fetch';
+import Cache from './cache/Cache';
+import * as media from './utils/media';
+import Eventverse from 'eventverse/lib/index';
 
 /**
- * The loader is responsible for taking the provided assets, loading 
- * them asynchronously, and adding them to the cache.
+ * Loads the specified assets and adds them to the cache.
  * 
- * @since 0.1.0
+ * @author Robert Corponoi <robertcorponoi@gmail.com>
+ * 
+ * @version 3.0.0
  */
-export default class Loader {
+export default class MuskOx extends Eventverse {
 
 	/**
-	 * @param {MuskOx} muskox A reference to the MuskOx module.
+	 * A reference to the cache used to store assets.
+	 * 
+	 * @since 2.0.0
+	 * 
+	 * @property {Cache}
 	 */
-	constructor(muskox) {
+	cache: Cache = new Cache();
 
-		/**
-		 * A reference to the MuskOx module.
-		 * 
-		 * @since 2.0.0
-		 * 
-		 * @property {MuskOx}
-		 * @readonly
-		 */
-		this._muskox = muskox;
+	/**
+	 * Initialize the fetch module to retrieve assets from the cache.
+	 * 
+	 * @since 2.0.0
+	 * @readonly
+	 */
+	fetch: Fetch = new Fetch(this.cache);
 
-		/**
-		 * A reference to the MuskOx cache.
-		 * 
-		 * @since 2.0.0
-		 * 
-		 * @property {Cache}
-		 * @readonly
-		 */
-		this._cache = muskox._cache;
+	/**
+	 * The crossOrigin option passed to MuskOx on initialization.
+	 * 
+	 * @since 3.0.0
+	 * 
+	 * @property {string}
+	 * @readonly
+	 */
+	crossOrigin: string;
 
-		/**
-		 * A reference to the options passed to MuskOx on initialization.
-		 * 
-		 * @since 0.1.0
-		 * 
-		 * @property {Object}
-		 * @readonly
-		 */
-		this._options = muskox._options;
+	/**
+	 * Stores assets that still have yet to be loaded.
+	 * 
+	 * @since 0.1.0
+	 * 
+	 * @property {Array<Asset>}
+	 */
+	queue: Array<Asset> = [];
 
-		/**
-		 * Stores assets that still have yet to be loaded.
-		 * 
-		 * @since 0.1.0
-		 * 
-		 * @property {Array}
-		 * @readonly
-		 */
-		this._queue = [];
+	/**
+	 * The current number of assets that have been loaded.
+	 * 
+	 * @since 0.1.0
+	 * 
+	 * @property {number}
+	 */
+	assetsLoaded: number = 0;
 
-		/**
-		 * The current number of assets that have been loaded.
-		 * 
-		 * @since 0.1.0
-		 * 
-		 * @property {number}
-		 * @readonly
-		 */
-		this._assetsLoaded = 0;
+	/**
+	 * The current number of assets that have yet to be loaded.
+	 * 
+	 * @since 0.1.0
+	 * 
+	 * @property {number}
+	 */
+	assetsToLoad: number = 0;
 
-		/**
-		 * The current number of assets that still have yet to be loaded.
-		 * 
-		 * @since 0.1.0
-		 * 
-		 * @property {number}
-		 * @readonly
-		 */
-		this._assetsToLoad = 0;
+	/**
+	 * A percent value that represents the current loading progress.
+	 * 
+	 * @since 0.1.0
+	 * 
+	 * @property {number} 
+	 */
+	_progress: number = 0;
 
-		/**
-		 * A percent value that represents the current loading progress.
-		 * 
-		 * @since 0.1.0
-		 * 
-		 * @property {number}
-		 * @readonly
-		 */
-		this._progress = 0;
+	/**
+	 * @param {Cache} cache A reference to the MuskOx cache.
+	 * @param {string} crossOrigin The crossOrigin option passed to MuskOx on initialization.
+	 */
+	constructor(crossOrigin: string) {
+
+		super();
+
+		this.crossOrigin = crossOrigin;
 
 	}
 
@@ -95,9 +98,42 @@ export default class Loader {
 	 * 
 	 * @returns {number}
 	 */
-	get progress() {
+	get progress(): number {
 
 		return this._progress;
+
+	}
+
+	/**
+	 * Takes the assets from the load queue and one by one it uses the appropriate 
+	 * method to load it and then add it to the cache.
+	 * 
+	 * @since 0.1.0
+	 */
+	start() {
+
+		for (const asset of this.queue) {
+
+			switch (asset.type) {
+
+				case 'image':
+					this.loadDefault(asset);
+					break;
+
+				case 'audio':
+				case 'video':
+					this.loadCanPlayThrough(asset);
+					break;
+
+				case 'text':
+				case 'binary':
+				case 'json':
+					this.loadXHR(asset);
+					break;
+
+			}
+
+		}
 
 	}
 
@@ -110,9 +146,9 @@ export default class Loader {
 	 * @param {string} src The path to the image asset.
 	 * @param {boolean} [replace=false] Indicates whether an image asset with the same key should be replaced in the cache or not.
 	 */
-	image(key, src, replace = false) {
+	image(key: string, src: string, replace: boolean = false) {
 
-		this._addToQueue('image', key, src, replace);
+		this.addToQueue('image', key, src, replace);
 
 	}
 
@@ -128,9 +164,9 @@ export default class Loader {
 	 * @param {string|Array<string>} src A path to the audio asset or an array of paths to an audio asset and its fallbacks.
 	 * @param {boolean} [replace=false] Indicates whether an audio asset with the same key should be replaced in the cache or not.
 	 */
-	audio(key, srcs, replace = false) {
+	audio(key: string, srcs: Array<string>, replace: boolean = false) {
 
-		this._addToQueue('audio', key, srcs, replace);
+		this.addToQueue('audio', key, srcs, replace);
 
 	}
 
@@ -146,9 +182,9 @@ export default class Loader {
 	 * @param {string|Array<string>} src A path to the video asset or an array of paths to a video asset and its fallbacks.
 	 * @param {boolean} [replace=false] Indicates whether a video asset with the same key should be replaced in the cache or not.
 	 */
-	video(key, srcs, replace = false) {
+	video(key: string, srcs: Array<string>, replace: boolean = false) {
 
-		this._addToQueue('video', key, srcs, replace);
+		this.addToQueue('video', key, srcs, replace);
 
 	}
 
@@ -161,9 +197,9 @@ export default class Loader {
 	 * @param {string} src The path to the text asset.
 	 * @param {boolean} [replace=false] Indicates whether a text asset with the same key should be replaced in the cache or not.
 	 */
-	text(key, src, replace = false) {
+	text(key: string, src: string, replace: boolean = false) {
 
-		this._addToQueue('text', key, src, replace);
+		this.addToQueue('text', key, src, replace);
 
 	}
 
@@ -176,9 +212,9 @@ export default class Loader {
 	 * @param {string} src The path to the binary asset.
 	 * @param {boolean} [replace=false] Indicates whether a binary asset with the same key should be replaced in the cache or not.
 	 */
-	binary(key, src, replace = false) {
+	binary(key: string, src: string, replace: boolean = false) {
 
-		this._addToQueue('binary', key, src, replace);
+		this.addToQueue('binary', key, src, replace);
 
 	}
 
@@ -191,9 +227,9 @@ export default class Loader {
    * @param {string} src The path to the JSON asset.
    * @param {boolean} [replace=false] Indicates whether a JSON asset with the same key should be replaced in the cache or not.
 	 */
-	json(key, src, replace = false) {
+	json(key: string, src: string, replace: boolean = false) {
 
-		this._addToQueue('json', key, src, replace);
+		this.addToQueue('json', key, src, replace);
 
 	}
 
@@ -206,49 +242,16 @@ export default class Loader {
 	 * 
 	 * @param {string} type The type of asset this asset is.
 	 * @param {string} key The key for the asset.
-	 * @param {string} src The path to the asset.
+	 * @param {string|Array<string>} src The path/s to the asset.
 	 * @param {boolean} replace Indicates whether an asset with the same key should be replaced in the cache or not.
 	 */
-	_addToQueue(type, key, src, replace) {
+	private addToQueue(type: string, key: string, src: (string | Array<string>), replace: boolean) {
 
-		const asset = new Asset(type, key, src);
+		const asset: Asset = { type: type, key: key, src: src };
 
-		this._queue.push(asset);
+		this.queue.push(asset);
 
-		this._assetsToLoad++;
-
-	}
-
-	/**
-	 * When MuskOx's `load` method is called, this takes the assets from the
-	 * load queue and one by one it uses the appropriate method to load it and
-	 * then add it to the cache.
-	 * 
-	 * @since 0.1.0
-	 * @private
-	 */
-	_loadAssets() {
-
-		for (const asset of this._queue) {
-
-			switch (asset._type) {
-				case 'image':
-					this._loadDefault(asset);
-					break;
-
-				case 'audio':
-				case 'video':
-					this._loadCanPlayThrough(asset);
-					break;
-
-				case 'text':
-				case 'json':
-				case 'binary':
-					this._loadXHR(asset);
-					break;
-			}
-
-		}
+		this.assetsToLoad++;
 
 	}
 
@@ -261,33 +264,25 @@ export default class Loader {
 	 * 
 	 * @param {Asset} asset The asset to load.
 	 */
-	_loadDefault(asset) {
+	private loadDefault(asset: Asset) {
 
 		asset.data = new Image();
 
-		asset.data.addEventListener('load', function load() {
+		asset.data.addEventListener('load', () => {
 
-			this._cacheAsset(asset);
+			this.cacheAsset(asset);
 
-			asset.data.removeEventListener('load', load);
+		}, false);
 
-		}.bind(this), false);
+		asset.data.addEventListener('error', () => {
 
-		asset.data.addEventListener('error', function loadError() {
+			// this.handleAssetError(asset);
 
-			this._handleAssetError(asset);
+		}, false);
 
-			asset.data.removeEventListener('error', loadError);
+		asset.data.src = asset.src.toString();
 
-		}.bind(this), false);
-
-		asset.data.src = asset._src;
-
-		if (this._options.crossOrigin) {
-
-			asset.data.crossOrigin = this._options.crossOrigin;
-
-		}
+		if (this.crossOrigin)	asset.data.crossOrigin = this.crossOrigin;
 
 	}
 
@@ -300,31 +295,27 @@ export default class Loader {
 	 * 
 	 * @param {Asset} asset The asset to load.
 	 */
-	_loadCanPlayThrough(asset) {
+	private loadCanPlayThrough(asset: Asset) {
 
-		if (!Array.isArray(asset._src)) asset._src = [asset._src];
+		if (!Array.isArray(asset.src)) asset.src = [asset.src];
 
-		if (asset._type === 'audio') asset.data = new Audio();
+		if (asset.type === 'audio') asset.data = new Audio();
 
 		else asset.data = document.createElement('video');
 
-		asset.data.addEventListener('canplaythrough', function load() {
+		asset.data.addEventListener('canplaythrough', () => {
 
-			this._cacheAsset(asset);
+			this.cacheAsset(asset);
 
-			asset.data.removeEventListener('canplaythrough', load);
+		}, false);
 
-		}.bind(this), false);
+		asset.data.addEventListener('error', () => {
 
-		asset.data.addEventListener('error', function loadError() {
+			// this.handleAssetError(asset);
 
-			this._handleAssetError(asset);
+		}, false);
 
-			asset.data.removeEventListener('error', loadError);
-
-		}.bind(this), false);
-
-		asset.data.src = getPlayableMedia(asset._type, asset._src);
+		asset.data.src = media.getPlayableMedia(asset.type, asset.src);
 
 	}
 
@@ -336,22 +327,22 @@ export default class Loader {
 	 * 
 	 * @param {Asset} asset The asset to load.
 	 */
-	_loadXHR(asset) {
+	private loadXHR(asset: Asset) {
 
 		asset.data = new XMLHttpRequest();
 
-		asset.data.addEventListener('readystatechange', function load() {
+		asset.data.addEventListener('readystatechange', () => {
 
 			if (asset.data.readyState == 4 && asset.data.status == 200) {
 
-				switch (asset._type) {
+				switch (asset.type) {
+
 					case 'text':
 						asset.data = asset.data.responseText;
 						break;
 
 					case 'binary':
 						const arrayBuffer = asset.data.response;
-
 						if (arrayBuffer) asset.data = new Uint8Array(arrayBuffer);
 						break;
 
@@ -360,23 +351,21 @@ export default class Loader {
 						break;
 				}
 
-				this._cacheAsset(asset);
+				this.cacheAsset(asset);
 
 			}
 
-		}.bind(this), false);
+		}, false);
 
-		asset.data.addEventListener('error', function loadError() {
+		asset.data.addEventListener('error', () => {
 
-			this._handleAssetError(asset);
+			// this.handleAssetError(asset);
 
-			asset.data.removeEventListener('error', loadError);
+		}, false);
 
-		}.bind(this), false);
+		if (asset.type == 'binary') asset.data.responseType = 'arraybuffer';
 
-		if (asset._type == 'binary') asset.data.responseType = 'arraybuffer';
-
-		asset.data.open('GET', asset._src);
+		asset.data.open('GET', asset.src);
 
 		asset.data.send();
 
@@ -391,13 +380,13 @@ export default class Loader {
 	 * 
 	 * @param {Asset} asset The loaded asset.
 	 */
-	_cacheAsset(asset) {
+	private cacheAsset(asset: Asset) {
 
-		this._cache._set(asset._type, asset._key, asset.data);
+		this.cache.set(asset.type, asset.key, asset.data);
 
-		this._assetsLoaded++;
+		this.assetsLoaded++;
 
-		this._updateLoadStatus(asset);
+		this.updateLoadStatus(asset);
 
 	}
 
@@ -416,13 +405,13 @@ export default class Loader {
 	 * 
 	 * @param {Asset} asset The most recently loaded asset.
 	 */
-	_updateLoadStatus(asset) {
+	private updateLoadStatus(asset: Asset) {
 
-		this._progress = ((this._assetsLoaded / this._assetsToLoad) * 100).toFixed(0);
+		this._progress = parseInt(((this.assetsLoaded / this.assetsToLoad) * 100).toFixed(0));
 
-		this._muskox.emit('asset-loaded', asset.data);
+		this.emit('asset-loaded', asset.data);
 
-		if (this._assetsLoaded === this._assetsToLoad) this._muskox.emit('load-complete');
+		if (this.assetsLoaded === this.assetsToLoad) this.emit('load-complete');
 
 	}
 
