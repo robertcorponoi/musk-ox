@@ -7,13 +7,14 @@
 <p align="center">MuskOx is an easy to use, event-driven, and efficient asset preloader for the browser.<p>
 
 <div align="center">
-	<!-- <a href="https://www.npmjs.com/package/musk-ox" target="__blank">
-		<img src="https://img.shields.io/npm/v/musk-ox.svg?style=flat-square">
+	<img src="https://img.shields.io/npm/v/musk-ox.svg?style=flat-square">
+	<img src="https://img.shields.io/github/license/robertcorponoi/musk-ox.svg?style=flat-square">
+	<img src="https://img.shields.io/github/issues/robertcorponoi/musk-ox.svg?style=flat-square">
+	<img src="https://img.shields.io/npm/dt/musk-ox.svg?style=flat-square">
+	<img src="https://img.shields.io/github/languages/code-size/robertcorponoi/musk-ox.svg?style=flat-square">
+	<a href="https://gitter.im/robertcorponoi/musk-ox?utm_source=share-link&utm_medium=link&utm_campaign=share-link">
+		<img src="https://img.shields.io/gitter/room/robertcorponoi/community.svg?style=flat-square">
 	</a>
-	<img src="https://img.shields.io/david/robertcorponoi/musk-ox.svg?style=flat-square">
-	<a href="https://gitter.im/robertcorponoi/community?utm_source=share-link&utm_medium=link&utm_campaign=share-link" target="__blank">
-		<img src="https://img.shields.io/gitter/room/robertcorponoi/musk-ox.svg?style=flat-square">
-	</a> -->
 </div>
 
 ## **Installation**
