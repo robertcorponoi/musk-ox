@@ -826,7 +826,7 @@ var Eventverse = unwrapExports(lib);
  * 
  * @author Robert Corponoi <robertcorponoi@gmail.com>
  * 
- * @version 3.0.0
+ * @version 3.1.0
  */
 
 var MuskOx =

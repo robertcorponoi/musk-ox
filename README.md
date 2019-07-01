@@ -262,3 +262,23 @@ Get a saved JSON asset from the cache.
 ```js
 const movies = ox.fetch.json('movies');
 ```
+
+## Properties
+
+There are also a few properties that are available:
+
+### **assetsLoaded**
+
+Gets the number of assets that have been loaded so far.
+
+### **assetsToLoad**
+
+Gets the number of assets that have yet to be loaded.
+
+### **progress**
+
+Gets the current loading progress as a percentage.
+
+## License
+
+MIT

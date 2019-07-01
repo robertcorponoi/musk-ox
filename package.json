@@ -1,6 +1,6 @@
 {
   "name": "musk-ox",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "MuskOx is an easy to use, event-driven, and efficient asset preloader for the browser.",
   "module": "muskox.js",
   "scripts": {
@@ -10,8 +10,9 @@
     "build:types": "tsc --emitDeclarationOnly",
     "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline",
     "bundle": "rollup -c",
-    "bundle:full": "npm run build && rollup -c",
-    "test": "npm run bundle && node test/server.js"
+    "bundle:watch": "rollup -c --watch",
+    "prepublish": "rollup -c && npm run build",
+    "test": "node test/server.js"
   },
   "keywords": [
     "asset",
@@ -25,6 +26,7 @@
     "load",
     "preload"
   ],
+  "types": "lib/index.d.ts",
   "author": "Robert Corponoi",
   "license": "MIT",
   "devDependencies": {
@@ -35,7 +37,7 @@
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-typescript": "^7.3.3",
     "chai": "^4.2.0",
-    "mocha": "^6.0.1",
+    "mocha": "^6.1.4",
     "rollup": "^1.2.3",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^9.2.1",

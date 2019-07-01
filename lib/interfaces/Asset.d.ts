@@ -1,7 +1,4 @@
-/**
- * Describes the structure of an Asset.
- */
-interface Asset {
+export default interface Asset {
     type: string;
     key: string;
     src: (string | Array<string>);

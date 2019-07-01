@@ -1,6 +1,6 @@
 'use strict'
 
-/// <reference path='../interfaces/Asset.ts' />
+import Asset from './interfaces/Asset';
 
 import Fetch from './fetch/Fetch';
 import Cache from './cache/Cache';
@@ -12,7 +12,7 @@ import Eventverse from 'eventverse/lib/index';
  * 
  * @author Robert Corponoi <robertcorponoi@gmail.com>
  * 
- * @version 3.0.0
+ * @version 3.1.0
  */
 export default class MuskOx extends Eventverse {
 

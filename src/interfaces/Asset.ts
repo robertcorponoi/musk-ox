@@ -1,9 +1,6 @@
 'use strict'
 
-/**
- * Describes the structure of an Asset.
- */
-interface Asset {
+export default interface Asset {
 
 	// The type of asset this asset is. Ex (image, audio, etc).
 	type: string,

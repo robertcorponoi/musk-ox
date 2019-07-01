@@ -1,0 +1,10 @@
+3.1.0 2019-07-01
+================
+* Updated dev dependencies to get rid of potential security vulnerabilities
+* Changed interface imports from reference paths to normal imports
+* Removed duplicate test case
+* Added available properties to the README
+
+0.1.0
+===============
+* Initial release
