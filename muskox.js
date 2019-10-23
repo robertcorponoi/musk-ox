@@ -323,11 +323,6 @@ var codecs = {
     'mp4': 'video/mp4;codecs="avc1.4D401E, mp4a.40.2"',
     'webm': 'video/webm;codecs="vp8.0, vorbis"'
   }
-  /**
-   * Describes common audio and video codecs to use when loading
-   * audio and video assets.
-   */
-
 };
 
 /**
@@ -374,8 +369,8 @@ function getPlayableMedia(type, srcs) {
     _iteratorError = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion && _iterator.return != null) {
-        _iterator.return();
+      if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+        _iterator["return"]();
       }
     } finally {
       if (_didIteratorError) {
@@ -388,7 +383,7 @@ function getPlayableMedia(type, srcs) {
 }
 
 function unwrapExports (x) {
-	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x.default : x;
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 }
 
 function createCommonjsModule(fn, module) {
@@ -428,14 +423,12 @@ var utils_1 = utils.compareFunctions;
 var Listener_1 = createCommonjsModule(function (module, exports) {
 /**
  * A listener represents a single event listener.
- * 
- * @since 0.1.0
  */
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -445,44 +438,43 @@ var Listener =
 /**
  * The function that will be called when the listener is processed.
  * 
- * @since 0.1.0
- * 
  * @property {Function}
- * @readonly
  */
 
 /**
  * The context to use when calling this listener.
  * 
- * @since 0.1.0
- * 
  * @property {*}
- * @readonly
  */
 
 /**
  * Whether or not this listener will be automatically destroyed after being run once.
  * 
- * @since 0.1.0
- * 
  * @property {boolean}
- * @readonly
+ */
+
+/**
+ * Keeps track of the number of times that this listener has been called.
+ * 
+ * @property {number} 
  */
 function Listener(fn, ctx, once) {
   _classCallCheck(this, Listener);
 
-  _defineProperty(this, "_fn", void 0);
+  _defineProperty(this, "fn", void 0);
 
-  _defineProperty(this, "_ctx", void 0);
+  _defineProperty(this, "ctx", void 0);
 
-  _defineProperty(this, "_once", void 0);
+  _defineProperty(this, "once", void 0);
 
-  this._fn = fn;
-  this._ctx = ctx;
-  this._once = once;
+  _defineProperty(this, "timesCalled", 0);
+
+  this.fn = fn;
+  this.ctx = ctx;
+  this.once = once;
 };
 
-exports.default = Listener;
+exports["default"] = Listener;
 
 });
 
@@ -493,15 +485,15 @@ var lib = createCommonjsModule(function (module, exports) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var utils$1 = _interopRequireWildcard(utils);
 
 var _Listener = _interopRequireDefault(Listener_1);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; return newObj; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -512,36 +504,25 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 /**
- * Eventverse is a highly performant and easy to understand event emitter 
- * for the JavaScript Universe which includes Node and the browser.
+ * Eventverse is a higly performant and easy to use event emitter for Nodejs and the browser.
  * 
  * @author Robert Corponoi <robertcorponoi@gmail.com>
- * 
- * @version 0.2.0
  */
 var Eventverse =
 /*#__PURE__*/
 function () {
   /**
-   * The maximum amount of listeners each event can have at
-   * one time.
-   * 
-   * @since 0.1.0
+   * The maximum amount of listeners each event can have at one time.
    * 
    * @property {number}
-   * @readonly
    * 
    * @default 10
    */
 
   /**
-   * A collection of all of the listeners created for this instance
-   * of Eventverse.
-   * 
-   * @since 0.1.0
+   * A collection of all of the listeners created for this instance of Eventverse.
    * 
    * @property {Object}
-   * @readonly
    */
 
   /**
@@ -552,16 +533,16 @@ function () {
 
     _classCallCheck(this, Eventverse);
 
-    _defineProperty(this, "_maxListenerCount", void 0);
+    _defineProperty(this, "maxListenerCount", void 0);
 
-    _defineProperty(this, "_events", Object.create(null));
+    _defineProperty(this, "events", Object.create(null));
 
-    this._maxListenerCount = maxListenerCount;
+    this.maxListenerCount = maxListenerCount;
   }
   /**
-   * Return the max amount of listeners allowed for each event.
+   * Returns the number of listeners for a given event.
    * 
-   * @since 0.1.0
+   * @param {string} event The name of the event.
    * 
    * @returns {number}
    */
@@ -569,29 +550,24 @@ function () {
 
   _createClass(Eventverse, [{
     key: "listenerCount",
-
-    /**
-     * Returns the number of listeners for a given event.
-     * 
-     * @since 0.1.0
-     * 
-     * @param {string} event The name of the event.
-     * 
-     * @returns {number}
-     */
     value: function listenerCount(event) {
-      if (!this.exists(event)) {
-        console.warn('[Eventverse][ListenerCount]: Unable to retrieve listener count for the given event because the given event does not exist');
-        return;
-      }
-
-      return this._events[event].length;
+      return this.events[event].length;
     }
     /**
-     * Runs all of the listeners attached to this Eventverse with the event name
-     * and with the supplied arguments.
+     * Returns the number of times a listener was called.
      * 
-     * @since 0.1.0
+     * @param {string} event The name of the event to get the times called for.
+     * 
+     * @returns {number} Returns the number of times the event was called.
+     */
+
+  }, {
+    key: "timesCalled",
+    value: function timesCalled(event) {
+      return this.events[event][0].timesCalled;
+    }
+    /**
+     * Runs all of the listeners attached to this Eventverse with the event name and with the supplied arguments.
      * 
      * @param {string} event The name of the event to emit.
      * @param {...*} args The arguments to pass to the listeners.
@@ -601,7 +577,7 @@ function () {
     key: "emit",
     value: function emit(event) {
       if (!this.exists(event)) return;
-      var listeners = this._events[event];
+      var listeners = this.events[event];
 
       for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
         args[_key - 1] = arguments[_key];
@@ -613,23 +589,22 @@ function () {
 
       try {
         for (var _iterator = listeners[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var _listener$_fn;
+          var _listener$fn;
 
           var listener = _step.value;
 
-          (_listener$_fn = listener._fn).call.apply(_listener$_fn, [listener._ctx].concat(args));
+          (_listener$fn = listener.fn).call.apply(_listener$fn, [listener.ctx].concat(args));
 
-          if (listener._once) {
-            this.removeListener(event, listener._fn);
-          }
+          listener.timesCalled++;
+          if (listener.once) this.removeListener(event, listener.fn);
         }
       } catch (err) {
         _didIteratorError = true;
         _iteratorError = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion && _iterator.return != null) {
-            _iterator.return();
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
           }
         } finally {
           if (_didIteratorError) {
@@ -640,8 +615,6 @@ function () {
     }
     /**
      * Adds a listener function for the given event.
-     * 
-     * @since 0.1.0
      * 
      * 
      * @param {string} event The name of the event to add a listener for.
@@ -657,23 +630,20 @@ function () {
     value: function addListener(event, fn) {
       var context = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this;
       var once = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-      var listener = new _Listener.default(fn, context, once);
+      var listener = new _Listener["default"](fn, context, once);
 
       if (!this.exists(event)) {
-        this._events[event] = [];
-      } else if (this._events[event].length === this._maxListenerCount) {
+        this.events[event] = [];
+      } else if (this.events[event].length === this.maxListenerCount) {
         console.warn("[Eventverse][addListener]: The event ".concat(event, " already has the max amount of listeners."));
         return;
       }
 
-      this._events[event].push(listener);
-
+      this.events[event].push(listener);
       return this;
     }
     /**
      * Removes a listener function for the given event.
-     * 
-     * @since 0.1.0
      * 
      * @param {string} event The name of the event to remove the listener on.
      * @param {Function} listener The listener to remove from the event.
@@ -699,15 +669,15 @@ function () {
         var _loop = function _loop() {
           var eventListener = _step2.value;
 
-          if (utils$1.compareFunctions(eventListener._fn, listener)) {
-            _this._events[event] = _this._events[event].filter(function (evListener) {
+          if (utils$1.compareFunctions(eventListener.fn, listener)) {
+            _this.events[event] = _this.events[event].filter(function (evListener) {
               return evListener != eventListener;
             });
             return "break";
           }
         };
 
-        for (var _iterator2 = this._events[event][Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+        for (var _iterator2 = this.events[event][Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
           var _ret = _loop();
 
           if (_ret === "break") break;
@@ -717,8 +687,8 @@ function () {
         _iteratorError2 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
-            _iterator2.return();
+          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+            _iterator2["return"]();
           }
         } finally {
           if (_didIteratorError2) {
@@ -731,8 +701,6 @@ function () {
     }
     /**
      * Removes all listeners from a given event.
-     * 
-     * @since 0.1.0
      * 
      * @param {string} event The name of the event to remove all listeners from.
      * 
@@ -747,13 +715,11 @@ function () {
         return;
       }
 
-      this._events[event] = [];
+      this.events[event] = [];
       return this;
     }
     /**
      * Add a listener function that will only run once.
-     * 
-     * @since 0.1.0
      * 
      * @param {string} event The name of the event to add a listener for.
      * @param {Function} fn The function to run when the event is emitted.
@@ -772,8 +738,6 @@ function () {
     /**
      * Adds a listener function for the given event.
      * 
-     * @since 0.1.0
-     * 
      * @param {string} event The name of the event to add a listener for.
      * @param {Function} fn The function to run when the event is emitted.
      * @param {Object} [context=this] The context to use when calling the listener.
@@ -790,8 +754,7 @@ function () {
     }
     /**
      * Checks if an event exists.
-     * 
-     * @since 0.1.0
+      * 
      * @private
      * 
      * @param {string} event The name of the event.
@@ -802,20 +765,15 @@ function () {
   }, {
     key: "exists",
     value: function exists(event) {
-      if (this._events[event]) return true;
+      if (this.events[event]) return true;
       return false;
-    }
-  }, {
-    key: "maxListenerCount",
-    get: function get() {
-      return this._maxListenerCount;
     }
   }]);
 
   return Eventverse;
 }();
 
-exports.default = Eventverse;
+exports["default"] = Eventverse;
 
 });
 
@@ -967,8 +925,8 @@ function (_Eventverse) {
         _iteratorError = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion && _iterator.return != null) {
-            _iterator.return();
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
           }
         } finally {
           if (_didIteratorError) {
