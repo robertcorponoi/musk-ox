@@ -1,6 +1,6 @@
 {
   "name": "musk-ox",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "description": "MuskOx is an easy to use, event-driven, and efficient asset preloader for the browser.",
   "module": "muskox.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline",
     "bundle": "rollup -c",
     "bundle:watch": "rollup -c --watch",
-    "prepublish": "rollup -c && npm run build",
+    "build:bundle": "rollup -c && npm run build",
     "test": "node test/server.js"
   },
   "keywords": [
@@ -30,22 +30,22 @@
   "author": "Robert Corponoi",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.5.0",
-    "@babel/core": "^7.5.4",
-    "@babel/plugin-proposal-class-properties": "^7.5.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.5.4",
-    "@babel/preset-env": "^7.5.4",
-    "@babel/preset-typescript": "^7.3.3",
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-typescript": "^7.6.0",
     "chai": "^4.2.0",
-    "mocha": "^6.1.4",
-    "rollup": "^1.17.0",
+    "mocha": "^6.2.2",
+    "rollup": "^1.25.2",
     "rollup-plugin-babel": "^4.3.3",
-    "rollup-plugin-commonjs": "^10.0.1",
+    "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "sinon": "^7.3.2",
-    "typescript": "^3.5.3"
+    "sinon": "^7.5.0",
+    "typescript": "^3.6.4"
   },
   "dependencies": {
-    "eventverse": "^1.0.0"
+    "eventverse": "^1.0.3"
   }
 }
