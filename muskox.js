@@ -35,60 +35,8 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
-function _inherits(subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function");
-  }
-
-  subClass.prototype = Object.create(superClass && superClass.prototype, {
-    constructor: {
-      value: subClass,
-      writable: true,
-      configurable: true
-    }
-  });
-  if (superClass) _setPrototypeOf(subClass, superClass);
-}
-
-function _getPrototypeOf(o) {
-  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
-    return o.__proto__ || Object.getPrototypeOf(o);
-  };
-  return _getPrototypeOf(o);
-}
-
-function _setPrototypeOf(o, p) {
-  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-    o.__proto__ = p;
-    return o;
-  };
-
-  return _setPrototypeOf(o, p);
-}
-
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return self;
-}
-
-function _possibleConstructorReturn(self, call) {
-  if (call && (typeof call === "object" || typeof call === "function")) {
-    return call;
-  }
-
-  return _assertThisInitialized(self);
-}
-
 /**
- * The Fetch Object (previously known as the Retriever) is a wrapper
- * around the cache that allows easy retrieval of cached assets.
- * 
- * @author Robert Corponoi
- * 
- * @version 1.0.0
+ * Provides an API for the cache that allows the user to easily retrieve cached assets.
  */
 var Fetch =
 /*#__PURE__*/
@@ -96,14 +44,13 @@ function () {
   /**
    * A reference to the cache.
    * 
-   * @since 0.1.0
-   * 
    * @property {Cache}
-   * @readonly
+    * 
+   * @private
    */
 
   /**
-   * @param {Cache} cache The cache initialized in the main module.
+   * @param {Cache} cache A reference to the cache.
    */
   function Fetch(cache) {
     _classCallCheck(this, Fetch);
@@ -113,13 +60,11 @@ function () {
     this.cache = cache;
   }
   /**
-   * Return an image asset from the cache.
+   * Returns an image asset from the cache.
    * 
-   * @since 0.1.0
+   * @param {string} key The key of the image asset to return.
    * 
-   * @param {string} key The key of the image to return.
-   * 
-   * @returns {HTMLElement}
+   * @returns {HTMLElement} Returns the image asset as a HTML image element.
    */
 
 
@@ -129,13 +74,11 @@ function () {
       return this.cache.get('image', key);
     }
     /**
-     * Return an audio asset from the cache.
+     * Returns an audio asset from the cache.
      * 
-     * @since 0.1.0
+     * @param {string} key The key of the audio asset to return.
      * 
-     * @param {string} key The key of the audio to return.
-     * 
-     * @returns {HTMLElement}
+     * @returns {HTMLElement} Returns the audio asset as a HTML audio element.
      */
 
   }, {
@@ -144,13 +87,11 @@ function () {
       return this.cache.get('audio', key);
     }
     /**
-     * Return a video asset from the cache.
+     * Returns a video asset from the cache.
      * 
-     * @since 0.1.0
+     * @param {string} key The key of the video asset to return.
      * 
-     * @param {string} key The key of the video to return.
-     * 
-     * @returns {HTMLElement}
+     * @returns {HTMLElement} Returns the video asset as an HTML video element.
      */
 
   }, {
@@ -159,13 +100,11 @@ function () {
       return this.cache.get('video', key);
     }
     /**
-     * Return a text asset from the cache.
+     * Returns a text asset from the cache.
      * 
-     * @since 0.1.0
+     * @param {string} key The key of the text asset to return.
      * 
-     * @param {string} key The key of the text to return.
-     * 
-     * @returns {HTMLElement}
+     * @returns {HTMLElement} Returns the text asset.
      */
 
   }, {
@@ -174,13 +113,11 @@ function () {
       return this.cache.get('text', key);
     }
     /**
-     * Return a binary asset from the cache.
+     * Returns a binary asset from the cache.
      * 
-     * @since 0.1.0
+     * @param {string} key The key of the binary asset to return.
      * 
-     * @param {string} key The key of the binary to return.
-     * 
-     * @returns {HTMLElement}
+     * @returns {HTMLElement} Returns the binary asset.
      */
 
   }, {
@@ -191,11 +128,9 @@ function () {
     /**
      * Return a json asset from the cache.
      * 
-     * @since 0.1.0
+     * @param {string} key The key of the json asset to return.
      * 
-     * @param {string} key The key of the json to return.
-     * 
-     * @returns {HTMLElement}
+     * @returns {HTMLElement} Returns the json asset.
      */
 
   }, {
@@ -211,59 +146,37 @@ function () {
 var Cache =
 /*#__PURE__*/
 function () {
-  /**
-   * All loaded assets are stored here.
-   * 
-   * @since 0.1.0
-   * 
-   * @property {Object}
-   */
   function Cache() {
     _classCallCheck(this, Cache);
 
-    _defineProperty(this, "assets", new Object(null));
-
-    this.boot();
+    _defineProperty(this, "assets", {
+      image: {},
+      audio: {},
+      video: {},
+      text: {},
+      binary: {},
+      json: {}
+    });
   }
-  /**
-   * Initialize the properties of the assets Object so that assets can
-   * be saved in their proper places.
-   * 
-   * @since 0.1.0
-   */
-
 
   _createClass(Cache, [{
-    key: "boot",
-    value: function boot() {
-      this.assets.image = new Object(null);
-      this.assets.audio = new Object(null);
-      this.assets.video = new Object(null);
-      this.assets.text = new Object(null);
-      this.assets.binary = new Object(null);
-      this.assets.json = new Object(null);
-    }
+    key: "get",
+
     /**
      * Returns an asset from the cache.
-     * 
-     * @since 0.1.0
      * 
      * @param {string} type The type of asset to retrieve
      * @param {string} key The name of the asset to retrieve.
      * 
      * @returns {HTMLElement|undefined} Returns the asset or undefined if it doesn't exist.
      */
-
-  }, {
-    key: "get",
     value: function get(type, key) {
-      if (this.exists(type, key)) return this.assets[type][key];
+      if (this._exists(type, key)) return this.assets[type][key];
     }
     /**
      * Adds an asset to the cache.
      * 
      * @since 0.1.0
-     * @private
      * 
      * @param {string} type The type of asset to add.
      * @param {string} key The key of the asset.
@@ -277,25 +190,26 @@ function () {
     key: "set",
     value: function set(type, key, asset) {
       var replace = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-      if (this.exists(type, key) && !replace) return false;
+      if (this._exists(type, key) && !replace) return false;
       this.assets[type][key] = asset;
       return true;
     }
     /**
-     * Check to see if an asset exists in the cache.
+     * Checks to see if an asset exists in the cache.
      * 
-     * This is used internally by the cache to save checking for assets
-     * that don't exist.
+     * This is used internally by this module to save time checking for assets that don't exist.
      * 
-     * @param {string} type The type of asset to check if exists.
-     * @param {string} key The key of the asset.
-     * 
-     * @returns {boolean} Returns true if the asset exists or false otherwise.
-     */
+     * @private
+    * 
+    * @param {string} type The type of asset to check if exists.
+    * @param {string} key The key of the asset.
+    * 
+    * @returns {boolean} Returns true if the asset exists or false otherwise.
+    */
 
   }, {
-    key: "exists",
-    value: function exists(type, key) {
+    key: "_exists",
+    value: function _exists(type, key) {
       if (this.assets[type][key]) return true;
       return false;
     }
@@ -305,10 +219,8 @@ function () {
 }();
 
 /**
- * Describes the structure of the audio and video codecs
- * objects.
+ * Common audio and video codecs to use when loading audo and video assets.
  */
-
 var codecs = {
   audio: {
     'mp3': 'audio/mpeg',
@@ -326,24 +238,13 @@ var codecs = {
 };
 
 /**
- * Provides helper functions to help deal with audio and video files since
- * they differ from other assets in terms of codecs and fallbacks.
- * 
- * @author Robert Corponoi <robertcorponoi@gmail.com>
- * 
- * @version 3.0.0
- */
-
-/**
- * Go through all of the provided srcs for the audio or video files and return
- * the first one that the browser is most likely capable of playing.
- * 
- * @since 2.0.0
+ * Goes through src strings for audio and video files and compares codecs to find the src that the browser is
+ * most likely capable of playing.
  * 
  * @param {string} type The type of asset being loaded, either audio or video.
  * @param {Array<string>} srcs The srcs provided for the asset.
  * 
- * @returns {string} The src of the asset that the browser is most likely capable of playing.
+ * @returns {string} Returns the src of the asset that the browser is most likely capable of playing.
  */
 
 function getPlayableMedia(type, srcs) {
@@ -382,221 +283,175 @@ function getPlayableMedia(type, srcs) {
   return '';
 }
 
-function unwrapExports (x) {
-	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+function _classCallCheck$1(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
 }
 
-function createCommonjsModule(fn, module) {
-	return module = { exports: {} }, fn(module, module.exports), module.exports;
+var classCallCheck = _classCallCheck$1;
+
+function _defineProperties$1(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
 }
 
-var utils = createCommonjsModule(function (module, exports) {
-/**
- * Compare two functions by turning them into strings and
- * removing whitespace/line-breaks and then checking equality.
- * 
- * @since 0.1.0
- * 
- * @param {Function} fn1 The first function.
- * @param {Function} fn2 The second function.
- * 
- * @returns {boolean} Returns true if the functions are equal and false otherwise.
- */
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.compareFunctions = compareFunctions;
-
-function compareFunctions(fn1, fn2) {
-  var f1 = fn1.toString().replace(/\n/g, '').replace(/\s{2}/g, ' ');
-  var f2 = fn2.toString().replace(/\n/g, '').replace(/\s{2}/g, ' ');
-  if (f1 === f2) return true;
-  return false;
+function _createClass$1(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties$1(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties$1(Constructor, staticProps);
+  return Constructor;
 }
 
-});
+var createClass = _createClass$1;
 
-unwrapExports(utils);
-var utils_1 = utils.compareFunctions;
+function _defineProperty$1(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
 
-var Listener_1 = createCommonjsModule(function (module, exports) {
-/**
- * A listener represents a single event listener.
- */
+  return obj;
+}
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
+var defineProperty = _defineProperty$1;
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var Listener =
-/**
- * The function that will be called when the listener is processed.
- * 
- * @property {Function}
- */
-
-/**
- * The context to use when calling this listener.
- * 
- * @property {*}
- */
-
-/**
- * Whether or not this listener will be automatically destroyed after being run once.
- * 
- * @property {boolean}
- */
-
-/**
- * Keeps track of the number of times that this listener has been called.
- * 
- * @property {number} 
- */
-function Listener(fn, ctx, once) {
-  _classCallCheck(this, Listener);
-
-  _defineProperty(this, "fn", void 0);
-
-  _defineProperty(this, "ctx", void 0);
-
-  _defineProperty(this, "once", void 0);
-
-  _defineProperty(this, "timesCalled", 0);
-
-  this.fn = fn;
-  this.ctx = ctx;
-  this.once = once;
-};
-
-exports["default"] = Listener;
-
-});
-
-unwrapExports(Listener_1);
-
-var lib = createCommonjsModule(function (module, exports) {
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var utils$1 = _interopRequireWildcard(utils);
-
-var _Listener = _interopRequireDefault(Listener_1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; return newObj; } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-/**
- * Eventverse is a higly performant and easy to use event emitter for Nodejs and the browser.
- * 
- * @author Robert Corponoi <robertcorponoi@gmail.com>
- */
-var Eventverse =
+var Task =
 /*#__PURE__*/
 function () {
   /**
-   * The maximum amount of listeners each event can have at one time.
+   * The method to be called when processing this task.
+   * 
+   * @property {Function}
+   */
+
+  /**
+   * Indicates whether this task will only run once before being deleted
+   * or not.
+   * 
+   * @property {boolean}
+   */
+
+  /**
+   * If true this indicates to Hypergiant that it needs to be deleted on the
+   * next pass.
+   * 
+   * @property {boolean}
+   */
+
+  /**
+   * The number of times that this task has been called.
    * 
    * @property {number}
-   * 
-   * @default 10
    */
 
   /**
-   * A collection of all of the listeners created for this instance of Eventverse.
+   * Indicates whether this task is currently paused or not.
    * 
-   * @property {Object}
+   * @property {boolean}
    */
 
   /**
-   * @param {number} [maxListenerCount=10] The maximum amount of listeners each event can have at one time. 
+   * @param {Function} fn The method to attach to this task.
+   * @param {boolean} once Indicates whether this task will only run once before being deleted or not.
    */
-  function Eventverse() {
-    var maxListenerCount = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
+  function Task(fn, once) {
+    classCallCheck(this, Task);
 
-    _classCallCheck(this, Eventverse);
+    defineProperty(this, "fn", void 0);
 
-    _defineProperty(this, "maxListenerCount", void 0);
+    defineProperty(this, "once", void 0);
 
-    _defineProperty(this, "events", Object.create(null));
+    defineProperty(this, "delete", false);
 
-    this.maxListenerCount = maxListenerCount;
+    defineProperty(this, "timesCalled", 0);
+
+    defineProperty(this, "paused", false);
+
+    this.fn = fn;
+    this.once = once;
   }
   /**
-   * Returns the number of listeners for a given event.
+   * Runs the method associated with this task.
    * 
-   * @param {string} event The name of the event.
-   * 
-   * @returns {number}
+   * @param {...*} args Any other data that should be passed to this task.
    */
 
 
-  _createClass(Eventverse, [{
-    key: "listenerCount",
-    value: function listenerCount(event) {
-      return this.events[event].length;
+  createClass(Task, [{
+    key: "run",
+    value: function run() {
+      if (this.paused) return;
+      this.fn.apply(this, arguments);
+      this.timesCalled++;
+      if (this.once) this["delete"] = true;
+    }
+  }]);
+
+  return Task;
+}();
+
+/**
+ * Hypergiant is used to create signals that run a task when emitted.
+ *
+ * One of the biggest advtantages that signals have over native JavaScript events is that they don't rely 
+ * on correct typing.
+ */
+
+var Hypergiant =
+/*#__PURE__*/
+function () {
+  function Hypergiant() {
+    classCallCheck(this, Hypergiant);
+
+    defineProperty(this, "tasks", new Set());
+  }
+
+  createClass(Hypergiant, [{
+    key: "add",
+
+    /**
+     * Add a new signal.
+     * 
+     * @param {Function} fn The method that should be called when the signal is dispatched.
+     * @param {boolean} [once=false] Indicates whether this signal should only be dispatched once and then deleted.
+     * 
+     * @returns {Hypergiant} Returns this for chaining.
+     */
+    value: function add(fn) {
+      var once = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      this.tasks.add(new Task(fn, once));
+      return this;
     }
     /**
-     * Returns the number of times a listener was called.
+     * Dispatch this Hypergiant event and run all of the tasks associated
+     * with it along with any data passed to it.
      * 
-     * @param {string} event The name of the event to get the times called for.
-     * 
-     * @returns {number} Returns the number of times the event was called.
+     * @param {...*} args Any other data that should be passed to the tasks associated with this Hypergiant instance.
      */
 
   }, {
-    key: "timesCalled",
-    value: function timesCalled(event) {
-      return this.events[event][0].timesCalled;
-    }
-    /**
-     * Runs all of the listeners attached to this Eventverse with the event name and with the supplied arguments.
-     * 
-     * @param {string} event The name of the event to emit.
-     * @param {...*} args The arguments to pass to the listeners.
-     */
-
-  }, {
-    key: "emit",
-    value: function emit(event) {
-      if (!this.exists(event)) return;
-      var listeners = this.events[event];
-
-      for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        args[_key - 1] = arguments[_key];
-      }
-
+    key: "dispatch",
+    value: function dispatch() {
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
 
       try {
-        for (var _iterator = listeners[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var _listener$fn;
-
-          var listener = _step.value;
-
-          (_listener$fn = listener.fn).call.apply(_listener$fn, [listener.ctx].concat(args));
-
-          listener.timesCalled++;
-          if (listener.once) this.removeListener(event, listener.fn);
+        for (var _iterator = this.tasks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var task = _step.value;
+          task.run.apply(task, arguments);
+          if (task["delete"]) this.tasks["delete"](task);
         }
       } catch (err) {
         _didIteratorError = true;
@@ -614,73 +469,30 @@ function () {
       }
     }
     /**
-     * Adds a listener function for the given event.
-     * 
-     * 
-     * @param {string} event The name of the event to add a listener for.
-     * @param {Function} fn The function to run when the event is emitted.
-     * @param {Object} context The context to use when calling the listener.
-     * @param {boolean} once Indicates whether this listener should only be called once.
-     * 
-     * @returns {Eventverse}
+     * Removes a task from this signal by name.
+     *
+     * @param {Function} task The task to remove.
+     *
+     * @returns {Hypergiant} Returns this for chaining.
      */
 
   }, {
-    key: "addListener",
-    value: function addListener(event, fn) {
-      var context = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this;
-      var once = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-      var listener = new _Listener["default"](fn, context, once);
-
-      if (!this.exists(event)) {
-        this.events[event] = [];
-      } else if (this.events[event].length === this.maxListenerCount) {
-        console.warn("[Eventverse][addListener]: The event ".concat(event, " already has the max amount of listeners."));
-        return;
-      }
-
-      this.events[event].push(listener);
-      return this;
-    }
-    /**
-     * Removes a listener function for the given event.
-     * 
-     * @param {string} event The name of the event to remove the listener on.
-     * @param {Function} listener The listener to remove from the event.
-     * 
-     * @returns {Eventverse}
-     */
-
-  }, {
-    key: "removeListener",
-    value: function removeListener(event, listener) {
-      var _this = this;
-
-      if (!this.exists(event)) {
-        console.warn('[Eventverse][removeListener]: Unable to remove listener for an event that doesnt exist.');
-        return;
-      }
-
+    key: "remove",
+    value: function remove(fn) {
+      var fnToString = fn.toString();
       var _iteratorNormalCompletion2 = true;
       var _didIteratorError2 = false;
       var _iteratorError2 = undefined;
 
       try {
-        var _loop = function _loop() {
-          var eventListener = _step2.value;
+        for (var _iterator2 = this.tasks[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var task = _step2.value;
+          var taskFnToString = task.fn.toString();
 
-          if (utils$1.compareFunctions(eventListener.fn, listener)) {
-            _this.events[event] = _this.events[event].filter(function (evListener) {
-              return evListener != eventListener;
-            });
-            return "break";
+          if (fnToString === taskFnToString) {
+            this.tasks["delete"](task);
+            break;
           }
-        };
-
-        for (var _iterator2 = this.events[event][Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var _ret = _loop();
-
-          if (_ret === "break") break;
         }
       } catch (err) {
         _didIteratorError2 = true;
@@ -700,188 +512,293 @@ function () {
       return this;
     }
     /**
-     * Removes all listeners from a given event.
-     * 
-     * @param {string} event The name of the event to remove all listeners from.
-     * 
-     * @returns {Eventverse}
+     * Removes all tasks from this signal.
+     *
+     * @returns {Hypergiant} Returns this for chaining.
      */
 
   }, {
-    key: "removeAllListeners",
-    value: function removeAllListeners(event) {
-      if (!this.exists(event)) {
-        console.warn('[Eventverse][removeAllListeners]: Unable to remove listener for an event that doesnt exist.');
-        return;
+    key: "removeAll",
+    value: function removeAll() {
+      this.tasks.clear();
+      return this;
+    }
+    /**
+     * Pauses a task attached to this signal until it is unpaused.
+     * 
+     * This means that the paused task will not be called and just be silent until the `enable` method is called
+     * on it returning it back to its normal state.
+     * 
+     * @param {Function} task The task to pause.
+     * 
+     * @returns {Hypergiant} Returns this for chaining.
+     */
+
+  }, {
+    key: "pause",
+    value: function pause(fn) {
+      var fnToString = fn.toString();
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
+
+      try {
+        for (var _iterator3 = this.tasks[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var task = _step3.value;
+          var taskFnToString = task.fn.toString();
+
+          if (!task.paused && fnToString === taskFnToString) {
+            task.paused = true;
+            break;
+          }
+        }
+      } catch (err) {
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
+            _iterator3["return"]();
+          }
+        } finally {
+          if (_didIteratorError3) {
+            throw _iteratorError3;
+          }
+        }
       }
 
-      this.events[event] = [];
       return this;
     }
     /**
-     * Add a listener function that will only run once.
+     * Resumes a task from a paused state.
      * 
-     * @param {string} event The name of the event to add a listener for.
-     * @param {Function} fn The function to run when the event is emitted.
-     * @param {Object} [context=this] The context to use when calling the listener.
+     * @param {Function} task The paused task.
      * 
-     * @returns {Eventverse}
+     * @returns {Hypergiant} Returns this for chaining.
      */
 
   }, {
-    key: "once",
-    value: function once(event, fn) {
-      var context = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this;
-      this.addListener(event, fn, context, true);
+    key: "resume",
+    value: function resume(fn) {
+      var fnToString = fn.toString();
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
+
+      try {
+        for (var _iterator4 = this.tasks[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var task = _step4.value;
+          var taskFnToString = task.fn.toString();
+
+          if (task.paused && fnToString === taskFnToString) {
+            task.paused = false;
+            break;
+          }
+        }
+      } catch (err) {
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
+            _iterator4["return"]();
+          }
+        } finally {
+          if (_didIteratorError4) {
+            throw _iteratorError4;
+          }
+        }
+      }
+
       return this;
     }
     /**
-     * Adds a listener function for the given event.
+     * Makes a task a noop function.
      * 
-     * @param {string} event The name of the event to add a listener for.
-     * @param {Function} fn The function to run when the event is emitted.
-     * @param {Object} [context=this] The context to use when calling the listener.
+     * @param {Function} task The task to make noop.
      * 
-     * @returns {Eventverse}
+     * @returns {Hypergiant} Returns this for chaining.
      */
 
   }, {
-    key: "on",
-    value: function on(event, fn) {
-      var context = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this;
-      this.addListener(event, fn, context);
+    key: "noop",
+    value: function noop(fn) {
+      var fnToString = fn.toString();
+      var _iteratorNormalCompletion5 = true;
+      var _didIteratorError5 = false;
+      var _iteratorError5 = undefined;
+
+      try {
+        for (var _iterator5 = this.tasks[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+          var task = _step5.value;
+          var taskFnToString = task.fn.toString();
+
+          if (fnToString === taskFnToString) {
+            task.fn = function () {};
+
+            break;
+          }
+        }
+      } catch (err) {
+        _didIteratorError5 = true;
+        _iteratorError5 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion5 && _iterator5["return"] != null) {
+            _iterator5["return"]();
+          }
+        } finally {
+          if (_didIteratorError5) {
+            throw _iteratorError5;
+          }
+        }
+      }
+
       return this;
-    }
-    /**
-     * Checks if an event exists.
-      * 
-     * @private
-     * 
-     * @param {string} event The name of the event.
-     * 
-     * @returns {boolean} Returns true if the event exists or false otherwise.
-     */
-
-  }, {
-    key: "exists",
-    value: function exists(event) {
-      if (this.events[event]) return true;
-      return false;
     }
   }]);
 
-  return Eventverse;
+  return Hypergiant;
 }();
 
-exports["default"] = Eventverse;
-
-});
-
-var Eventverse = unwrapExports(lib);
-
 /**
- * Loads the specified assets and adds them to the cache.
- * 
- * @author Robert Corponoi <robertcorponoi@gmail.com>
- * 
- * @version 3.1.0
+ * Musk Ox takes a collection of assets that need to be loaded for use in the browser and adds them to cache
+ * so that they can be used whenever.
  */
 
 var MuskOx =
 /*#__PURE__*/
-function (_Eventverse) {
-  _inherits(MuskOx, _Eventverse);
-
+function () {
   /**
    * A reference to the cache used to store assets.
-   * 
-   * @since 2.0.0
+    * 
+    * @private
    * 
    * @property {Cache}
    */
 
   /**
-   * Initialize the fetch module to retrieve assets from the cache.
-   * 
-   * @since 2.0.0
-   * @readonly
+   * A reference to the fetch module used to retrieve assets.
+    * 
+    * @property {Fetch}
+    * 
+    * @private
    */
 
   /**
-   * The crossOrigin option passed to MuskOx on initialization.
-   * 
-   * @since 3.0.0
-   * 
-   * @property {string}
-   * @readonly
-   */
-
-  /**
-   * Stores assets that still have yet to be loaded.
-   * 
-   * @since 0.1.0
+   * A reference to the assets that still have yet to be loaded.
    * 
    * @property {Array<Asset>}
+    * 
+    * @private
    */
 
   /**
    * The current number of assets that have been loaded.
    * 
-   * @since 0.1.0
-   * 
    * @property {number}
+    * 
+    * @private
    */
 
   /**
    * The current number of assets that have yet to be loaded.
    * 
-   * @since 0.1.0
-   * 
    * @property {number}
+    * 
+    * @private
+   */
+
+  /**
+   * The crossOrigin option passed to MuskOx on initialization.
+   * 
+   * @private
+   * 
+   * @property {string}
    */
 
   /**
    * A percent value that represents the current loading progress.
    * 
-   * @since 0.1.0
-   * 
    * @property {number} 
+    * 
+    * @private
    */
 
   /**
-   * @param {Cache} cache A reference to the MuskOx cache.
+   * The signal that gets dispatched whenever the loading progress is updated.
+   * 
+   * When this signal gets dispatched it contains the load progress as a percentage.
+   * 
+   * @property {Hypergiant}
+   * 
+   * @private
+   */
+
+  /**
+   * The signal that gets dispatched each time an individual asset is loaded.
+   * 
+   * When this signal gets dispatched it contains the asset that was loaded.
+   * 
+   * @property {Hypergiant}
+   * 
+   * @private
+   */
+
+  /**
+   * The signal that gets dispatched when an asset encounters an error while loading.
+   * 
+   * When this signal gets dispatched it contains the error that was thrown.
+   * 
+   * @property {Hypergiant}
+   * 
+   * @private
+   */
+
+  /**
+   * The signal that gets dispatched when loading is complete.
+   * 
+   * @property {Hypergiant}
+   * 
+   * @private
+   */
+
+  /**
    * @param {string} crossOrigin The crossOrigin option passed to MuskOx on initialization.
    */
-  function MuskOx(crossOrigin) {
-    var _this;
+  function MuskOx() {
+    var crossOrigin = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
     _classCallCheck(this, MuskOx);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(MuskOx).call(this));
+    _defineProperty(this, "_cache", new Cache());
 
-    _defineProperty(_assertThisInitialized(_this), "cache", new Cache());
+    _defineProperty(this, "_fetch", new Fetch(this.cache));
 
-    _defineProperty(_assertThisInitialized(_this), "fetch", new Fetch(_this.cache));
+    _defineProperty(this, "_queue", []);
 
-    _defineProperty(_assertThisInitialized(_this), "crossOrigin", void 0);
+    _defineProperty(this, "_assetsLoaded", 0);
 
-    _defineProperty(_assertThisInitialized(_this), "queue", []);
+    _defineProperty(this, "_assetsToLoad", 0);
 
-    _defineProperty(_assertThisInitialized(_this), "assetsLoaded", 0);
+    _defineProperty(this, "_crossOrigin", void 0);
 
-    _defineProperty(_assertThisInitialized(_this), "assetsToLoad", 0);
+    _defineProperty(this, "_progress", 0);
 
-    _defineProperty(_assertThisInitialized(_this), "_progress", 0);
+    _defineProperty(this, "_onProgress", new Hypergiant());
 
-    _this.crossOrigin = crossOrigin;
-    return _this;
+    _defineProperty(this, "_onLoad", new Hypergiant());
+
+    _defineProperty(this, "_onError", new Hypergiant());
+
+    _defineProperty(this, "_onComplete", new Hypergiant());
+
+    this._crossOrigin = crossOrigin;
   }
   /**
-   * Returns the current loading progress.
+   * Returns the cache module.
    * 
-   * @since 0.1.0
-   * 
-   * @returns {number}
+   * @returns {Cache}
    */
 
 
@@ -889,10 +806,7 @@ function (_Eventverse) {
     key: "start",
 
     /**
-     * Takes the assets from the load queue and one by one it uses the appropriate 
-     * method to load it and then add it to the cache.
-     * 
-     * @since 0.1.0
+     * Takes the assets from the load queue and one by one it uses the appropriate  method to load it and then add it to the cache.
      */
     value: function start() {
       var _iteratorNormalCompletion = true;
@@ -900,23 +814,26 @@ function (_Eventverse) {
       var _iteratorError = undefined;
 
       try {
-        for (var _iterator = this.queue[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        for (var _iterator = this._queue[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var asset = _step.value;
 
           switch (asset.type) {
             case 'image':
-              this.loadDefault(asset);
+              this._loadDefault(asset);
+
               break;
 
             case 'audio':
             case 'video':
-              this.loadCanPlayThrough(asset);
+              this._loadCanPlayThrough(asset);
+
               break;
 
             case 'text':
             case 'binary':
             case 'json':
-              this.loadXHR(asset);
+              this._loadXHR(asset);
+
               break;
           }
         }
@@ -938,8 +855,6 @@ function (_Eventverse) {
     /**
      * Adds an image asset to the load queue.
      * 
-     * @since 0.1.0
-     * 
      * @param {string} key A unique key to reference this image asset by.
      * @param {string} src The path to the image asset.
      * @param {boolean} [replace=false] Indicates whether an image asset with the same key should be replaced in the cache or not.
@@ -949,15 +864,13 @@ function (_Eventverse) {
     key: "image",
     value: function image(key, src) {
       var replace = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-      this.addToQueue('image', key, src, replace);
+
+      this._addToQueue('image', key, src, replace);
     }
     /**
      * Adds an audio asset to the load queue.
      * 
-     * Muliple `src` paths can be provided in case one or more are not supported
-     * by the user's browser.
-     * 
-     * @since 0.1.0
+     * Muliple `src` paths can be provided in case one or more are not supported by the user's browser.
      * 
      * @param {string} key A unique key to reference this audio asset by.
      * @param {string|Array<string>} src A path to the audio asset or an array of paths to an audio asset and its fallbacks.
@@ -968,15 +881,13 @@ function (_Eventverse) {
     key: "audio",
     value: function audio(key, srcs) {
       var replace = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-      this.addToQueue('audio', key, srcs, replace);
+
+      this._addToQueue('audio', key, srcs, replace);
     }
     /**
      * Adds a video asset to the load queue.
      * 
-     * Muliple `src` paths can be provided in case one or more are not supported
-     * by the user's browser.
-     * 
-     * @since 0.1.0
+     * Muliple `src` paths can be provided in case one or more are not supported by the user's browser.
      * 
      * @param {string} key A unique key to reference this video asset by.
      * @param {string|Array<string>} src A path to the video asset or an array of paths to a video asset and its fallbacks.
@@ -987,12 +898,11 @@ function (_Eventverse) {
     key: "video",
     value: function video(key, srcs) {
       var replace = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-      this.addToQueue('video', key, srcs, replace);
+
+      this._addToQueue('video', key, srcs, replace);
     }
     /**
      * Adds the contents of a text file to the load queue.
-     * 
-     * @since 0.1.0
      * 
      * @param {string} key A unique key to reference this text asset by.
      * @param {string} src The path to the text asset.
@@ -1003,12 +913,11 @@ function (_Eventverse) {
     key: "text",
     value: function text(key, src) {
       var replace = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-      this.addToQueue('text', key, src, replace);
+
+      this._addToQueue('text', key, src, replace);
     }
     /**
      * Adds the binary contents of a file to the load queue.
-     * 
-     * @since 0.1.0
      * 
      * @param {string} key A unique key to reference this binary asset by.
      * @param {string} src The path to the binary asset.
@@ -1019,12 +928,11 @@ function (_Eventverse) {
     key: "binary",
     value: function binary(key, src) {
       var replace = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-      this.addToQueue('binary', key, src, replace);
+
+      this._addToQueue('binary', key, src, replace);
     }
     /**
       * Add the contents of a JSON file as a parsed object to the load queue.
-      * 
-      * @since 0.1.0
       * 
       * @param {string} key A unique key to reference this JSON asset by.
       * @param {string} src The path to the JSON asset.
@@ -1035,13 +943,13 @@ function (_Eventverse) {
     key: "json",
     value: function json(key, src) {
       var replace = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-      this.addToQueue('json', key, src, replace);
+
+      this._addToQueue('json', key, src, replace);
     }
     /**
      * Takes the supplied asset, creates an asset instance out of it, and
      * adds it to the load queue.
-     * 
-     * @since 0.1.0
+      * 
      * @private
      * 
      * @param {string} type The type of asset this asset is.
@@ -1051,77 +959,78 @@ function (_Eventverse) {
      */
 
   }, {
-    key: "addToQueue",
-    value: function addToQueue(type, key, src, replace) {
+    key: "_addToQueue",
+    value: function _addToQueue(type, key, src, replace) {
       var asset = {
         type: type,
         key: key,
         src: src
       };
-      this.queue.push(asset);
-      this.assetsToLoad++;
+
+      this._queue.push(asset);
+
+      this._assetsToLoad++;
     }
     /**
      * Load assets that can be loaded through the simple use of an event listener
      * that listens to the asset's load event.
-     * 
-     * @since 2.0.0
+      * 
      * @private
      * 
      * @param {Asset} asset The asset to load.
      */
 
   }, {
-    key: "loadDefault",
-    value: function loadDefault(asset) {
-      var _this2 = this;
+    key: "_loadDefault",
+    value: function _loadDefault(asset) {
+      var _this = this;
 
       asset.data = new Image();
       asset.data.addEventListener('load', function () {
-        _this2.cacheAsset(asset);
+        _this._cacheAsset(asset);
       }, false);
-      asset.data.addEventListener('error', function () {// this.handleAssetError(asset);
+      asset.data.addEventListener('error', function (err) {
+        _this._handleAssetError(asset, err);
       }, false);
       asset.data.src = asset.src.toString();
-      if (this.crossOrigin) asset.data.crossOrigin = this.crossOrigin;
+      if (this._crossOrigin) asset.data.crossOrigin = this._crossOrigin;
     }
     /**
      * Load assets that can be loaded through the use of the `canPlayThrough` event
      * listener.
-     * 
-     * @since 2.0.0
+      * 
      * @private
      * 
      * @param {Asset} asset The asset to load.
      */
 
   }, {
-    key: "loadCanPlayThrough",
-    value: function loadCanPlayThrough(asset) {
-      var _this3 = this;
+    key: "_loadCanPlayThrough",
+    value: function _loadCanPlayThrough(asset) {
+      var _this2 = this;
 
       if (!Array.isArray(asset.src)) asset.src = [asset.src];
       if (asset.type === 'audio') asset.data = new Audio();else asset.data = document.createElement('video');
       asset.data.addEventListener('canplaythrough', function () {
-        _this3.cacheAsset(asset);
+        _this2._cacheAsset(asset);
       }, false);
-      asset.data.addEventListener('error', function () {// this.handleAssetError(asset);
+      asset.data.addEventListener('error', function (err) {
+        _this2._handleAssetError(asset, err);
       }, false);
       asset.data.src = getPlayableMedia(asset.type, asset.src);
     }
     /**
      * Load assets that can be loaded through XHR.
-     * 
-     * @since 2.0.0
+      * 
      * @private
      * 
      * @param {Asset} asset The asset to load.
      */
 
   }, {
-    key: "loadXHR",
-    value: function loadXHR(asset) {
-      var _this4 = this;
+    key: "_loadXHR",
+    value: function _loadXHR(asset) {
+      var _this3 = this;
 
       asset.data = new XMLHttpRequest();
       asset.data.addEventListener('readystatechange', function () {
@@ -1141,63 +1050,141 @@ function (_Eventverse) {
               break;
           }
 
-          _this4.cacheAsset(asset);
+          _this3._cacheAsset(asset);
         }
       }, false);
-      asset.data.addEventListener('error', function () {// this.handleAssetError(asset);
+      asset.data.addEventListener('error', function (err) {
+        _this3._handleAssetError(asset, err);
       }, false);
       if (asset.type == 'binary') asset.data.responseType = 'arraybuffer';
       asset.data.open('GET', asset.src);
       asset.data.send();
     }
     /**
-     * Takes the loaded asset and adds it to the cache while updating properties of this
-     * module including the load progress.
-     * 
-     * @since 2.0.0
+     * Takes the loaded asset and adds it to the cache while updating properties of this module including the load progress.
+      * 
      * @private
      * 
      * @param {Asset} asset The loaded asset.
      */
 
   }, {
-    key: "cacheAsset",
-    value: function cacheAsset(asset) {
+    key: "_cacheAsset",
+    value: function _cacheAsset(asset) {
       this.cache.set(asset.type, asset.key, asset.data);
-      this.assetsLoaded++;
-      this.updateLoadStatus(asset);
+      this._assetsLoaded++;
+
+      this._updateLoadStatus(asset);
     }
     /**
-     * Check to see if the queue has finished processing and all of the assets have
-     * been loaded.
+     * Check to see if the queue has finished processing and all of the assets have been loaded.
      * 
-     * This also updates the progress property to reflect the most update to date
-     * progress.
+     * This also updates the progress property to reflect the most update to date progress.
      * 
-     * Finally, if all of the items are loaded, the load complete event is emitted
-     * signaling that it is safe to use all of the loaded assets.
-     * 
-     * @since 2.0.0
+     * Finally, if all of the items are loaded, the load complete event is emitted signaling that it is safe to use all of the 
+      * loaded assets.
+      * 
      * @private
      * 
      * @param {Asset} asset The most recently loaded asset.
      */
 
   }, {
-    key: "updateLoadStatus",
-    value: function updateLoadStatus(asset) {
-      this._progress = parseInt((this.assetsLoaded / this.assetsToLoad * 100).toFixed(0));
-      this.emit('asset-loaded', asset.data);
-      if (this.assetsLoaded === this.assetsToLoad) this.emit('load-complete');
+    key: "_updateLoadStatus",
+    value: function _updateLoadStatus(asset) {
+      this._progress = parseInt((this._assetsLoaded / this._assetsToLoad * 100).toFixed(0));
+      this.onProgress.dispatch(this._progress);
+      this.onLoad.dispatch(asset);
+      if (this._assetsLoaded === this._assetsToLoad) this.onComplete.dispatch();
     }
+    /**
+     * When an asset encounters an error while loading this will dispatch the onError event.
+     * 
+     * @private
+     * 
+     * @param {Asset} asset The asset that encountered an error while loading.
+     * @param {string} err The error that was dispatched.
+     */
+
+  }, {
+    key: "_handleAssetError",
+    value: function _handleAssetError(asset, err) {
+      this.onError.dispatch(asset, err);
+    }
+  }, {
+    key: "cache",
+    get: function get() {
+      return this._cache;
+    }
+    /**
+     * Returns the fetch module.
+     * 
+     * @returns {Fetch}
+     */
+
+  }, {
+    key: "fetch",
+    get: function get() {
+      return this._fetch;
+    }
+    /**
+     * Returns the current loading progress.
+     * 
+     * @returns {number}
+     */
+
   }, {
     key: "progress",
     get: function get() {
       return this._progress;
     }
+    /**
+     * Returns the onProgress signal.
+     * 
+     * @returns {Hypergiant}
+     */
+
+  }, {
+    key: "onProgress",
+    get: function get() {
+      return this._onProgress;
+    }
+    /**
+     * Returns the assetLoaded signal.
+     * 
+     * @returns {Hypergiant}
+     */
+
+  }, {
+    key: "onLoad",
+    get: function get() {
+      return this._onLoad;
+    }
+    /**
+     * Returns the onError signal.
+     * 
+     * @returns {Hypergiant}
+     */
+
+  }, {
+    key: "onError",
+    get: function get() {
+      return this._onError;
+    }
+    /**
+     * Returns the onComplete signal.
+     * 
+     * @returns {Hypergiant}
+     */
+
+  }, {
+    key: "onComplete",
+    get: function get() {
+      return this._onComplete;
+    }
   }]);
 
   return MuskOx;
-}(Eventverse);
+}();
 
 export default MuskOx;

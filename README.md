@@ -17,6 +17,15 @@
 	</a>
 </div>
 
+## **Table of Contents**
+
+- [Installation](#installation)
+- [Initialization](#initialization)
+- [Signals and Events](#signals-and-events)
+- [Step 1: Defining Assets to Load](#step-1:-defining-assets-to-load)
+- [Step 2: Loading Assets](#step-2:-start-loading)
+- [Step 3: Fetching Assets](#step3-:-using-loaded-assets)
+
 ## **Installation**
 
 MuskOx is shipped as an ES6 module.
@@ -27,7 +36,7 @@ To install MuskOx through npm, simply use the following command:
 $ npm install musk-ox
 ```
 
-## **Usage**
+## **Initialization**
 
 To use MuskOx, simply import the module:
 
@@ -35,9 +44,7 @@ To use MuskOx, simply import the module:
 import MuskOx from './path/to/muskox.js';
 ```
 
-## **Initialization**
-
-After importing MuskOx, a new instance can be initialized like so:
+and after that, a new instance can be initialized like so:
 
 ```js
 const ox = new MuskOx();
@@ -49,9 +56,63 @@ There is also currently one initialization parameter that allows you to specify 
 |-------------|--------|------------------------------------------------------------------|---------|
 | crossOrigin | string | A cross origin policy to set on all assets that use cross origin | ''      |
 
-## **Usage**
-
 The MuskOx asset loading system is split into three steps: defining assets to load, initiating the load, and retrieving loaded assets.
+
+## **Signals and Events**
+
+Before we get into usage, it helps to know how Musk Ox's event system works. Instead of using traditional events, MuskOx uses signals which don't rely on event names but objects that dispatch the signal with any data needed.
+
+To respond to a signal, you have to use the signal's `add` method and then declare the function that you want to run when the signal is dispatched.
+
+Currently MuskOx has the following available events:
+
+### **onLoad**
+
+The onLoad signal is dispatched each time an asset is loaded and it contains the data of the asset that was loaded.
+
+```js
+const onLoadResponse = (asset) => {
+  console.log(asset); // Asset is the asset that was most recently loaded.
+};
+
+ox.onLoad.add(onLoadResponse);
+```
+
+### **onComplete**
+
+The onComplete signal is dispatched when all of the assets are loaded.
+
+```js
+const onCompleteResponse = () => {
+};
+
+ox.onComplete.add(onCompleteResponse);
+```
+
+### **onError**
+
+The onError signal is dispatched if an asset encounters an error while loading and it contains the asset and error that was thrown.
+
+```js
+const onErrorResponse = (asset, err) => {
+  console.log(asset); // Asset is the asset that had trouble loading.
+  console.log(err); // Err is the error that was thrown while loading the asset.
+};
+
+ox.onError.add(onErrorResponse);
+```
+
+### **onProgress**
+
+The onProgress signal is dispatched when the loading progress changes and it contains the current load percentage.
+
+```js
+const onProgressResponse = (percent) => {
+  console.log(percent); // Percent is the current loading percentage.
+};
+
+ox.onProgress.add(onProgressResponse);
+```
 
 ## **Step 1: Defining Assets to Load**
 
@@ -178,14 +239,16 @@ are loaded and ready to use.
 Here is an example of how to listen to the `load-complete` event:
 
 ```js
-ox.on('load-complete', () => {
+const complete = () => {
 
-	// You can start using assets here.
-	const star = ox.fetch.image('star');
+  // You can start using assets here.
+  const star = ox.fetch.image('star');
 
-	document.body.appendChild(star);
+  document.body.appendChild(star);
 
-});
+};
+
+ox.onComplete.add(complete);
 ```
 
 Retrieving assets from the cache is made possible through the `fetch` methods. By using the method that corresponds to the asset type and
