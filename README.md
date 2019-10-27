@@ -22,9 +22,9 @@
 - [Installation](#installation)
 - [Initialization](#initialization)
 - [Signals and Events](#signals-and-events)
-- [Step 1: Defining Assets to Load](#step-1:-defining-assets-to-load)
-- [Step 2: Loading Assets](#step-2:-start-loading)
-- [Step 3: Fetching Assets](#step3-:-using-loaded-assets)
+- [Step 1: Defining Assets to Load](#step-1-defining-assets-to-load)
+- [Step 2: Loading Assets](#step-2-start-loading)
+- [Step 3: Fetching Assets](#step-3-using-loaded-assets)
 
 ## **Installation**
 
