@@ -1,3 +1,6 @@
+/**
+ * Describes the structure of an asset that is loaded through musk-ox.
+ */
 export default interface Asset {
     type: string;
     key: string;

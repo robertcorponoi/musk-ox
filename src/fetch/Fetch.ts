@@ -3,27 +3,21 @@
 import Cache from '../cache/Cache';
 
 /**
- * The Fetch Object (previously known as the Retriever) is a wrapper
- * around the cache that allows easy retrieval of cached assets.
- * 
- * @author Robert Corponoi
- * 
- * @version 1.0.0
+ * Provides an API for the cache that allows the user to easily retrieve cached assets.
  */
 export default class Fetch {
 
 	/**
 	 * A reference to the cache.
 	 * 
-	 * @since 0.1.0
-	 * 
 	 * @property {Cache}
-	 * @readonly
+   * 
+	 * @private
 	 */
 	private cache: Cache;
 
 	/**
-	 * @param {Cache} cache The cache initialized in the main module.
+	 * @param {Cache} cache A reference to the cache.
 	 */
 	constructor(cache: Cache) {
 
@@ -32,13 +26,11 @@ export default class Fetch {
 	}
 
 	/**
-	 * Return an image asset from the cache.
+	 * Returns an image asset from the cache.
 	 * 
-	 * @since 0.1.0
+	 * @param {string} key The key of the image asset to return.
 	 * 
-	 * @param {string} key The key of the image to return.
-	 * 
-	 * @returns {HTMLElement}
+	 * @returns {HTMLElement} Returns the image asset as a HTML image element.
 	 */
 	image(key: string): (HTMLElement | undefined) {
 
@@ -47,13 +39,11 @@ export default class Fetch {
 	}
 
 	/**
-	 * Return an audio asset from the cache.
+	 * Returns an audio asset from the cache.
 	 * 
-	 * @since 0.1.0
+	 * @param {string} key The key of the audio asset to return.
 	 * 
-	 * @param {string} key The key of the audio to return.
-	 * 
-	 * @returns {HTMLElement}
+	 * @returns {HTMLElement} Returns the audio asset as a HTML audio element.
 	 */
 	audio(key: string): (HTMLElement | undefined) {
 
@@ -62,13 +52,11 @@ export default class Fetch {
 	}
 
 	/**
-	 * Return a video asset from the cache.
+	 * Returns a video asset from the cache.
 	 * 
-	 * @since 0.1.0
+	 * @param {string} key The key of the video asset to return.
 	 * 
-	 * @param {string} key The key of the video to return.
-	 * 
-	 * @returns {HTMLElement}
+	 * @returns {HTMLElement} Returns the video asset as an HTML video element.
 	 */
 	video(key: string): (HTMLElement | undefined) {
 
@@ -77,13 +65,11 @@ export default class Fetch {
 	}
 
 	/**
-	 * Return a text asset from the cache.
+	 * Returns a text asset from the cache.
 	 * 
-	 * @since 0.1.0
+	 * @param {string} key The key of the text asset to return.
 	 * 
-	 * @param {string} key The key of the text to return.
-	 * 
-	 * @returns {HTMLElement}
+	 * @returns {HTMLElement} Returns the text asset.
 	 */
 	text(key: string): (HTMLElement | undefined) {
 
@@ -92,13 +78,11 @@ export default class Fetch {
 	}
 
 	/**
-	 * Return a binary asset from the cache.
+	 * Returns a binary asset from the cache.
 	 * 
-	 * @since 0.1.0
+	 * @param {string} key The key of the binary asset to return.
 	 * 
-	 * @param {string} key The key of the binary to return.
-	 * 
-	 * @returns {HTMLElement}
+	 * @returns {HTMLElement} Returns the binary asset.
 	 */
 	binary(key: string): (HTMLElement | undefined) {
 
@@ -109,11 +93,9 @@ export default class Fetch {
 	/**
 	 * Return a json asset from the cache.
 	 * 
-	 * @since 0.1.0
+	 * @param {string} key The key of the json asset to return.
 	 * 
-	 * @param {string} key The key of the json to return.
-	 * 
-	 * @returns {HTMLElement}
+	 * @returns {HTMLElement} Returns the json asset.
 	 */
 	json(key: string): (HTMLElement | undefined) {
 

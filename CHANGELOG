@@ -1,3 +1,9 @@
+4.0.0 / 2019-10-27
+==================
+* Updated events architecture to use signals.
+* Updated documentation to reflect signal changes.
+* Updated tests to reflect signal changes.
+
 3.1.2 / 2019-10-23
 ==================
 * [FEATURE] Updated all dependencies to their latest versions.

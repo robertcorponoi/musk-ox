@@ -1,95 +1,157 @@
-import Asset from './interfaces/Asset';
 import Fetch from './fetch/Fetch';
 import Cache from './cache/Cache';
-import Eventverse from 'eventverse/lib/index';
+import Hypergiant from 'hypergiant';
 /**
- * Loads the specified assets and adds them to the cache.
- *
- * @author Robert Corponoi <robertcorponoi@gmail.com>
- *
- * @version 3.1.0
+ * Musk Ox takes a collection of assets that need to be loaded for use in the browser and adds them to cache
+ * so that they can be used whenever.
  */
-export default class MuskOx extends Eventverse {
+export default class MuskOx {
     /**
      * A reference to the cache used to store assets.
-     *
-     * @since 2.0.0
+   *
+   * @private
      *
      * @property {Cache}
      */
-    cache: Cache;
+    private _cache;
     /**
-     * Initialize the fetch module to retrieve assets from the cache.
-     *
-     * @since 2.0.0
-     * @readonly
+     * A reference to the fetch module used to retrieve assets.
+   *
+   * @property {Fetch}
+   *
+   * @private
      */
-    fetch: Fetch;
+    private _fetch;
     /**
-     * The crossOrigin option passed to MuskOx on initialization.
-     *
-     * @since 3.0.0
-     *
-     * @property {string}
-     * @readonly
-     */
-    crossOrigin: string;
-    /**
-     * Stores assets that still have yet to be loaded.
-     *
-     * @since 0.1.0
+     * A reference to the assets that still have yet to be loaded.
      *
      * @property {Array<Asset>}
+   *
+   * @private
      */
-    queue: Array<Asset>;
+    private _queue;
     /**
      * The current number of assets that have been loaded.
      *
-     * @since 0.1.0
-     *
      * @property {number}
+   *
+   * @private
      */
-    assetsLoaded: number;
+    private _assetsLoaded;
     /**
      * The current number of assets that have yet to be loaded.
      *
-     * @since 0.1.0
-     *
      * @property {number}
+   *
+   * @private
      */
-    assetsToLoad: number;
+    private _assetsToLoad;
+    /**
+     * The crossOrigin option passed to MuskOx on initialization.
+     *
+     * @private
+     *
+     * @property {string}
+     */
+    private _crossOrigin;
     /**
      * A percent value that represents the current loading progress.
      *
-     * @since 0.1.0
-     *
      * @property {number}
+   *
+   * @private
      */
-    _progress: number;
+    private _progress;
     /**
-     * @param {Cache} cache A reference to the MuskOx cache.
+     * The signal that gets dispatched whenever the loading progress is updated.
+     *
+     * When this signal gets dispatched it contains the load progress as a percentage.
+     *
+     * @property {Hypergiant}
+     *
+     * @private
+     */
+    private _onProgress;
+    /**
+     * The signal that gets dispatched each time an individual asset is loaded.
+     *
+     * When this signal gets dispatched it contains the asset that was loaded.
+     *
+     * @property {Hypergiant}
+     *
+     * @private
+     */
+    private _onLoad;
+    /**
+     * The signal that gets dispatched when an asset encounters an error while loading.
+     *
+     * When this signal gets dispatched it contains the error that was thrown.
+     *
+     * @property {Hypergiant}
+     *
+     * @private
+     */
+    private _onError;
+    /**
+     * The signal that gets dispatched when loading is complete.
+     *
+     * @property {Hypergiant}
+     *
+     * @private
+     */
+    private _onComplete;
+    /**
      * @param {string} crossOrigin The crossOrigin option passed to MuskOx on initialization.
      */
-    constructor(crossOrigin: string);
+    constructor(crossOrigin?: string);
+    /**
+     * Returns the cache module.
+     *
+     * @returns {Cache}
+     */
+    readonly cache: Cache;
+    /**
+     * Returns the fetch module.
+     *
+     * @returns {Fetch}
+     */
+    readonly fetch: Fetch;
     /**
      * Returns the current loading progress.
-     *
-     * @since 0.1.0
      *
      * @returns {number}
      */
     readonly progress: number;
     /**
-     * Takes the assets from the load queue and one by one it uses the appropriate
-     * method to load it and then add it to the cache.
+     * Returns the onProgress signal.
      *
-     * @since 0.1.0
+     * @returns {Hypergiant}
+     */
+    readonly onProgress: Hypergiant;
+    /**
+     * Returns the assetLoaded signal.
+     *
+     * @returns {Hypergiant}
+     */
+    readonly onLoad: Hypergiant;
+    /**
+     * Returns the onError signal.
+     *
+     * @returns {Hypergiant}
+     */
+    readonly onError: Hypergiant;
+    /**
+     * Returns the onComplete signal.
+     *
+     * @returns {Hypergiant}
+     */
+    readonly onComplete: Hypergiant;
+    /**
+     * Takes the assets from the load queue and one by one it uses the appropriate  method to load it and then add it to the cache.
      */
     start(): void;
     /**
      * Adds an image asset to the load queue.
-     *
-     * @since 0.1.0
      *
      * @param {string} key A unique key to reference this image asset by.
      * @param {string} src The path to the image asset.
@@ -99,10 +161,7 @@ export default class MuskOx extends Eventverse {
     /**
      * Adds an audio asset to the load queue.
      *
-     * Muliple `src` paths can be provided in case one or more are not supported
-     * by the user's browser.
-     *
-     * @since 0.1.0
+     * Muliple `src` paths can be provided in case one or more are not supported by the user's browser.
      *
      * @param {string} key A unique key to reference this audio asset by.
      * @param {string|Array<string>} src A path to the audio asset or an array of paths to an audio asset and its fallbacks.
@@ -112,10 +171,7 @@ export default class MuskOx extends Eventverse {
     /**
      * Adds a video asset to the load queue.
      *
-     * Muliple `src` paths can be provided in case one or more are not supported
-     * by the user's browser.
-     *
-     * @since 0.1.0
+     * Muliple `src` paths can be provided in case one or more are not supported by the user's browser.
      *
      * @param {string} key A unique key to reference this video asset by.
      * @param {string|Array<string>} src A path to the video asset or an array of paths to a video asset and its fallbacks.
@@ -125,8 +181,6 @@ export default class MuskOx extends Eventverse {
     /**
      * Adds the contents of a text file to the load queue.
      *
-     * @since 0.1.0
-     *
      * @param {string} key A unique key to reference this text asset by.
      * @param {string} src The path to the text asset.
      * @param {boolean} [replace=false] Indicates whether a text asset with the same key should be replaced in the cache or not.
@@ -134,8 +188,6 @@ export default class MuskOx extends Eventverse {
     text(key: string, src: string, replace?: boolean): void;
     /**
      * Adds the binary contents of a file to the load queue.
-     *
-     * @since 0.1.0
      *
      * @param {string} key A unique key to reference this binary asset by.
      * @param {string} src The path to the binary asset.
@@ -145,8 +197,6 @@ export default class MuskOx extends Eventverse {
     /**
    * Add the contents of a JSON file as a parsed object to the load queue.
    *
-   * @since 0.1.0
-   *
    * @param {string} key A unique key to reference this JSON asset by.
    * @param {string} src The path to the JSON asset.
    * @param {boolean} [replace=false] Indicates whether a JSON asset with the same key should be replaced in the cache or not.
@@ -155,8 +205,7 @@ export default class MuskOx extends Eventverse {
     /**
      * Takes the supplied asset, creates an asset instance out of it, and
      * adds it to the load queue.
-     *
-     * @since 0.1.0
+   *
      * @private
      *
      * @param {string} type The type of asset this asset is.
@@ -164,60 +213,61 @@ export default class MuskOx extends Eventverse {
      * @param {string|Array<string>} src The path/s to the asset.
      * @param {boolean} replace Indicates whether an asset with the same key should be replaced in the cache or not.
      */
-    private addToQueue;
+    private _addToQueue;
     /**
      * Load assets that can be loaded through the simple use of an event listener
      * that listens to the asset's load event.
-     *
-     * @since 2.0.0
+   *
      * @private
      *
      * @param {Asset} asset The asset to load.
      */
-    private loadDefault;
+    private _loadDefault;
     /**
      * Load assets that can be loaded through the use of the `canPlayThrough` event
      * listener.
-     *
-     * @since 2.0.0
+   *
      * @private
      *
      * @param {Asset} asset The asset to load.
      */
-    private loadCanPlayThrough;
+    private _loadCanPlayThrough;
     /**
      * Load assets that can be loaded through XHR.
-     *
-     * @since 2.0.0
+   *
      * @private
      *
      * @param {Asset} asset The asset to load.
      */
-    private loadXHR;
+    private _loadXHR;
     /**
-     * Takes the loaded asset and adds it to the cache while updating properties of this
-     * module including the load progress.
-     *
-     * @since 2.0.0
+     * Takes the loaded asset and adds it to the cache while updating properties of this module including the load progress.
+   *
      * @private
      *
      * @param {Asset} asset The loaded asset.
      */
-    private cacheAsset;
+    private _cacheAsset;
     /**
-     * Check to see if the queue has finished processing and all of the assets have
-     * been loaded.
+     * Check to see if the queue has finished processing and all of the assets have been loaded.
      *
-     * This also updates the progress property to reflect the most update to date
-     * progress.
+     * This also updates the progress property to reflect the most update to date progress.
      *
-     * Finally, if all of the items are loaded, the load complete event is emitted
-     * signaling that it is safe to use all of the loaded assets.
-     *
-     * @since 2.0.0
+     * Finally, if all of the items are loaded, the load complete event is emitted signaling that it is safe to use all of the
+   * loaded assets.
+   *
      * @private
      *
      * @param {Asset} asset The most recently loaded asset.
      */
-    private updateLoadStatus;
+    private _updateLoadStatus;
+    /**
+     * When an asset encounters an error while loading this will dispatch the onError event.
+     *
+     * @private
+     *
+     * @param {Asset} asset The asset that encountered an error while loading.
+     * @param {string} err The error that was dispatched.
+     */
+    private _handleAssetError;
 }
