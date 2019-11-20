@@ -109,43 +109,43 @@ export default class MuskOx {
      *
      * @returns {Cache}
      */
-    readonly cache: Cache;
+    get cache(): Cache;
     /**
      * Returns the fetch module.
      *
      * @returns {Fetch}
      */
-    readonly fetch: Fetch;
+    get fetch(): Fetch;
     /**
      * Returns the current loading progress.
      *
      * @returns {number}
      */
-    readonly progress: number;
+    get progress(): number;
     /**
      * Returns the onProgress signal.
      *
      * @returns {Hypergiant}
      */
-    readonly onProgress: Hypergiant;
+    get onProgress(): Hypergiant;
     /**
      * Returns the assetLoaded signal.
      *
      * @returns {Hypergiant}
      */
-    readonly onLoad: Hypergiant;
+    get onLoad(): Hypergiant;
     /**
      * Returns the onError signal.
      *
      * @returns {Hypergiant}
      */
-    readonly onError: Hypergiant;
+    get onError(): Hypergiant;
     /**
      * Returns the onComplete signal.
      *
      * @returns {Hypergiant}
      */
-    readonly onComplete: Hypergiant;
+    get onComplete(): Hypergiant;
     /**
      * Takes the assets from the load queue and one by one it uses the appropriate  method to load it and then add it to the cache.
      */

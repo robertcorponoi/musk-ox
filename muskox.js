@@ -336,21 +336,25 @@ function () {
    */
 
   /**
-   * Indicates whether this task will only run once before being deleted
-   * or not.
+   * Indicates whether this task will only run once before being deleted or not.
    * 
+    * @private
+    * 
    * @property {boolean}
    */
 
   /**
-   * If true this indicates to Hypergiant that it needs to be deleted on the
-   * next pass.
+   * If true this indicates to Hypergiant that it needs to be deleted on the next pass.
+    * 
+    * @private
    * 
    * @property {boolean}
    */
 
   /**
    * The number of times that this task has been called.
+    * 
+    * @private
    * 
    * @property {number}
    */
@@ -370,31 +374,64 @@ function () {
 
     defineProperty(this, "fn", void 0);
 
-    defineProperty(this, "once", void 0);
+    defineProperty(this, "_once", void 0);
 
-    defineProperty(this, "delete", false);
+    defineProperty(this, "_delete", false);
 
-    defineProperty(this, "timesCalled", 0);
+    defineProperty(this, "_timesCalled", 0);
 
     defineProperty(this, "paused", false);
 
     this.fn = fn;
-    this.once = once;
+    this._once = once;
   }
   /**
-   * Runs the method associated with this task.
+   * Returns whether the task should run only once or not.
    * 
-   * @param {...*} args Any other data that should be passed to this task.
+   * @returns {boolean}
    */
 
 
   createClass(Task, [{
     key: "run",
+
+    /**
+     * Runs the method associated with this task.
+     * 
+     * @param {...*} args Any other data that should be passed to this task.
+     */
     value: function run() {
       if (this.paused) return;
       this.fn.apply(this, arguments);
-      this.timesCalled++;
-      if (this.once) this["delete"] = true;
+      this._timesCalled++;
+      if (this._once) this._delete = true;
+    }
+  }, {
+    key: "once",
+    get: function get() {
+      return this._once;
+    }
+    /**
+     * Returns whether the task should be deleted or not.
+     * 
+     * @returns {boolean}
+     */
+
+  }, {
+    key: "delete",
+    get: function get() {
+      return this._delete;
+    }
+    /**
+     * Returns the number of times that this task has been called.
+     * 
+     * @returns {number}
+     */
+
+  }, {
+    key: "timesCalled",
+    get: function get() {
+      return this._timesCalled;
     }
   }]);
 
@@ -414,7 +451,7 @@ function () {
   function Hypergiant() {
     classCallCheck(this, Hypergiant);
 
-    defineProperty(this, "tasks", new Set());
+    defineProperty(this, "_tasks", new Set());
   }
 
   createClass(Hypergiant, [{
@@ -430,7 +467,9 @@ function () {
      */
     value: function add(fn) {
       var once = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-      this.tasks.add(new Task(fn, once));
+
+      this._tasks.add(new Task(fn, once));
+
       return this;
     }
     /**
@@ -448,10 +487,10 @@ function () {
       var _iteratorError = undefined;
 
       try {
-        for (var _iterator = this.tasks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        for (var _iterator = this._tasks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var task = _step.value;
           task.run.apply(task, arguments);
-          if (task["delete"]) this.tasks["delete"](task);
+          if (task["delete"]) this._tasks["delete"](task);
         }
       } catch (err) {
         _didIteratorError = true;
@@ -485,12 +524,13 @@ function () {
       var _iteratorError2 = undefined;
 
       try {
-        for (var _iterator2 = this.tasks[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+        for (var _iterator2 = this._tasks[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
           var task = _step2.value;
           var taskFnToString = task.fn.toString();
 
           if (fnToString === taskFnToString) {
-            this.tasks["delete"](task);
+            this._tasks["delete"](task);
+
             break;
           }
         }
@@ -520,7 +560,8 @@ function () {
   }, {
     key: "removeAll",
     value: function removeAll() {
-      this.tasks.clear();
+      this._tasks.clear();
+
       return this;
     }
     /**
@@ -543,7 +584,7 @@ function () {
       var _iteratorError3 = undefined;
 
       try {
-        for (var _iterator3 = this.tasks[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+        for (var _iterator3 = this._tasks[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
           var task = _step3.value;
           var taskFnToString = task.fn.toString();
 
@@ -586,7 +627,7 @@ function () {
       var _iteratorError4 = undefined;
 
       try {
-        for (var _iterator4 = this.tasks[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+        for (var _iterator4 = this._tasks[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
           var task = _step4.value;
           var taskFnToString = task.fn.toString();
 
@@ -629,7 +670,7 @@ function () {
       var _iteratorError5 = undefined;
 
       try {
-        for (var _iterator5 = this.tasks[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+        for (var _iterator5 = this._tasks[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
           var task = _step5.value;
           var taskFnToString = task.fn.toString();
 
@@ -655,6 +696,28 @@ function () {
       }
 
       return this;
+    }
+  }, {
+    key: "tasks",
+
+    /**
+     * Returns the tasks created for this signal.
+     * 
+     * @returns {Set<Task>}
+     */
+    get: function get() {
+      return this._tasks;
+    }
+    /**
+     * Returns the number of tasks currently assigned to this signal.
+     * 
+     * @returns {number}
+     */
+
+  }, {
+    key: "numTasks",
+    get: function get() {
+      return this._tasks.size;
     }
   }]);
 

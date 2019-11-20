@@ -1,3 +1,9 @@
+4.0.1 / 2019-11-19
+==================
+* [MISC] Updated all dependencies to their latest versions.
+* [MISC] Removed eventverse as a dependency.
+* [MISC] Updated README badges.
+
 4.0.0 / 2019-10-27
 ==================
 * Updated events architecture to use signals.
