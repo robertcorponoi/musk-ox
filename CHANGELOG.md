@@ -1,3 +1,8 @@
+4.0.2 / 2020-01-09
+==================
+* [MISC] Updated all dev dependencies to their latest versions.
+* [MISC] Updated license year to reflect new year.
+
 4.0.1 / 2019-11-19
 ==================
 * [MISC] Updated all dependencies to their latest versions.

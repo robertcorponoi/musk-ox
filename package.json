@@ -1,6 +1,6 @@
 {
   "name": "musk-ox",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "MuskOx is an easy to use, event-driven, and efficient asset preloader for the browser.",
   "module": "muskox.js",
   "scripts": {
@@ -34,20 +34,20 @@
   "author": "Robert Corponoi",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.7.0",
-    "@babel/core": "^7.7.2",
-    "@babel/plugin-proposal-class-properties": "^7.7.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
-    "@babel/preset-env": "^7.7.1",
-    "@babel/preset-typescript": "^7.7.2",
+    "@babel/cli": "^7.7.7",
+    "@babel/core": "^7.7.7",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/preset-typescript": "^7.7.7",
     "chai": "^4.2.0",
-    "mocha": "^6.2.2",
-    "rollup": "^1.27.2",
+    "mocha": "^7.0.0",
+    "rollup": "^1.29.0",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "sinon": "^7.5.0",
-    "typescript": "^3.7.2"
+    "sinon": "^8.0.4",
+    "typescript": "^3.7.4"
   },
   "dependencies": {
     "hypergiant": "^3.0.1"
