@@ -1,6 +1,6 @@
 {
   "name": "musk-ox",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "description": "MuskOx is an easy to use, event-driven, and efficient asset preloader for the browser.",
   "module": "muskox.js",
   "scripts": {

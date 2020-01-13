@@ -1,3 +1,7 @@
+4.1.1 / 2020-01-13
+==================
+* [MISC] Removed logo from this repo, added it to the graphics repository, and updated the reference in the README in this repo.
+
 4.1.0 / 2020-01-13
 ==================
 * [FEATURE] Made it so that if no assets are added to load that the cycle still completes and dispatches the assets loaded signal.
