@@ -258,7 +258,7 @@ export default class MuskOx {
    *
      * @private
      *
-     * @param {Asset} asset The most recently loaded asset.
+     * @param {Asset} [asset] The most recently loaded asset.
      */
     private _updateLoadStatus;
     /**

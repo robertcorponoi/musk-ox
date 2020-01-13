@@ -55,9 +55,9 @@ function () {
   function Fetch(cache) {
     _classCallCheck(this, Fetch);
 
-    _defineProperty(this, "cache", void 0);
+    _defineProperty(this, "_cache", void 0);
 
-    this.cache = cache;
+    this._cache = cache;
   }
   /**
    * Returns an image asset from the cache.
@@ -71,7 +71,7 @@ function () {
   _createClass(Fetch, [{
     key: "image",
     value: function image(key) {
-      return this.cache.get('image', key);
+      return this._cache.get('image', key);
     }
     /**
      * Returns an audio asset from the cache.
@@ -84,7 +84,7 @@ function () {
   }, {
     key: "audio",
     value: function audio(key) {
-      return this.cache.get('audio', key);
+      return this._cache.get('audio', key);
     }
     /**
      * Returns a video asset from the cache.
@@ -97,7 +97,7 @@ function () {
   }, {
     key: "video",
     value: function video(key) {
-      return this.cache.get('video', key);
+      return this._cache.get('video', key);
     }
     /**
      * Returns a text asset from the cache.
@@ -110,7 +110,7 @@ function () {
   }, {
     key: "text",
     value: function text(key) {
-      return this.cache.get('text', key);
+      return this._cache.get('text', key);
     }
     /**
      * Returns a binary asset from the cache.
@@ -123,7 +123,7 @@ function () {
   }, {
     key: "binary",
     value: function binary(key) {
-      return this.cache.get('binary', key);
+      return this._cache.get('binary', key);
     }
     /**
      * Return a json asset from the cache.
@@ -136,7 +136,7 @@ function () {
   }, {
     key: "json",
     value: function json(key) {
-      return this.cache.get('json', key);
+      return this._cache.get('json', key);
     }
   }]);
 
@@ -175,8 +175,6 @@ function () {
     }
     /**
      * Adds an asset to the cache.
-     * 
-     * @since 0.1.0
      * 
      * @param {string} type The type of asset to add.
      * @param {string} key The key of the asset.
@@ -260,10 +258,7 @@ function getPlayableMedia(type, srcs) {
       var src = _step.value;
       var ext = src.slice(src.lastIndexOf('.') + 1);
       var codec = codecs[type][ext];
-
-      if (asset.canPlayType(codec) == 'probably' || asset.canPlayType(codec) == 'maybe') {
-        return src;
-      }
+      if (asset.canPlayType(codec) == 'probably' || asset.canPlayType(codec) == 'maybe') return src;
     }
   } catch (err) {
     _didIteratorError = true;
@@ -872,6 +867,7 @@ function () {
      * Takes the assets from the load queue and one by one it uses the appropriate  method to load it and then add it to the cache.
      */
     value: function start() {
+      if (this._queue.length === 0) this._updateLoadStatus();
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
@@ -1149,7 +1145,7 @@ function () {
       * 
      * @private
      * 
-     * @param {Asset} asset The most recently loaded asset.
+     * @param {Asset} [asset] The most recently loaded asset.
      */
 
   }, {

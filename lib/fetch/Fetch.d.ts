@@ -10,7 +10,7 @@ export default class Fetch {
    *
      * @private
      */
-    private cache;
+    private _cache;
     /**
      * @param {Cache} cache A reference to the cache.
      */

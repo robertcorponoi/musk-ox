@@ -6,7 +6,6 @@ import Codecs from '../interfaces/Codecs';
  * Common audio and video codecs to use when loading audo and video assets.
  */
 const codecs: Codecs = {
-
   audio: {
     'mp3': 'audio/mpeg',
     'm4a': 'audio/mp4',
@@ -21,7 +20,6 @@ const codecs: Codecs = {
     'mp4': 'video/mp4;codecs="avc1.4D401E, mp4a.40.2"',
     'webm': 'video/webm;codecs="vp8.0, vorbis"'
   }
-
 };
 
 export default codecs;

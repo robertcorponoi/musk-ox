@@ -6,7 +6,6 @@ import Cache from '../cache/Cache';
  * Provides an API for the cache that allows the user to easily retrieve cached assets.
  */
 export default class Fetch {
-
 	/**
 	 * A reference to the cache.
 	 * 
@@ -14,15 +13,13 @@ export default class Fetch {
    * 
 	 * @private
 	 */
-	private cache: Cache;
+	private _cache: Cache;
 
 	/**
 	 * @param {Cache} cache A reference to the cache.
 	 */
 	constructor(cache: Cache) {
-
-		this.cache = cache;
-
+		this._cache = cache;
 	}
 
 	/**
@@ -33,9 +30,7 @@ export default class Fetch {
 	 * @returns {HTMLElement} Returns the image asset as a HTML image element.
 	 */
 	image(key: string): (HTMLElement | undefined) {
-
-		return this.cache.get('image', key);
-
+		return this._cache.get('image', key);
 	}
 
 	/**
@@ -46,9 +41,7 @@ export default class Fetch {
 	 * @returns {HTMLElement} Returns the audio asset as a HTML audio element.
 	 */
 	audio(key: string): (HTMLElement | undefined) {
-
-		return this.cache.get('audio', key);
-
+		return this._cache.get('audio', key);
 	}
 
 	/**
@@ -59,9 +52,7 @@ export default class Fetch {
 	 * @returns {HTMLElement} Returns the video asset as an HTML video element.
 	 */
 	video(key: string): (HTMLElement | undefined) {
-
-		return this.cache.get('video', key);
-
+		return this._cache.get('video', key);
 	}
 
 	/**
@@ -72,9 +63,7 @@ export default class Fetch {
 	 * @returns {HTMLElement} Returns the text asset.
 	 */
 	text(key: string): (HTMLElement | undefined) {
-
-		return this.cache.get('text', key);
-
+		return this._cache.get('text', key);
 	}
 
 	/**
@@ -85,9 +74,7 @@ export default class Fetch {
 	 * @returns {HTMLElement} Returns the binary asset.
 	 */
 	binary(key: string): (HTMLElement | undefined) {
-
-		return this.cache.get('binary', key);
-
+		return this._cache.get('binary', key);
 	}
 
 	/**
@@ -98,9 +85,6 @@ export default class Fetch {
 	 * @returns {HTMLElement} Returns the json asset.
 	 */
 	json(key: string): (HTMLElement | undefined) {
-
-		return this.cache.get('json', key);
-
+		return this._cache.get('json', key);
 	}
-	 
 }

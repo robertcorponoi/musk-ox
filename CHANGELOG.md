@@ -1,3 +1,12 @@
+4.1.0 / 2020-01-13
+==================
+* [FEATURE] Made it so that if no assets are added to load that the cycle still completes and dispatches the assets loaded signal.
+* [FEATURE] Added a test for loading with no assets.
+* [MISC] Normalized the `cache` property in Fetch.js to `_cache` just like all of the other private properties and methods.
+* [MISC] Restructured tests.
+* [MISC] Updated all dev dependencies to their latest versions.
+* [MISC] Removed unnecessary jsdoc comments and extra spacing.
+
 4.0.2 / 2020-01-09
 ==================
 * [MISC] Updated all dev dependencies to their latest versions.

@@ -8,19 +8,14 @@ beforeEach(() => ox = new MuskOx());
 
 afterEach(() => ox = null);
 
-describe('Loading and retrieving image assets', () => {
-
+describe('Loading and retrieving assets', () => {
   it('should load and retrieve an image asset as HTML image elements', done => {
-
     const check = () => {
-
       const star = ox.fetch.image('star');
 
       chai.expect(star instanceof HTMLImageElement).to.be.true;
 
       done();
-
-
     };
 
     ox.onComplete.add(check);
@@ -28,19 +23,15 @@ describe('Loading and retrieving image assets', () => {
     ox.image('star', './assets/star.png');
 
     ox.start();
-
   });
 
   it('should create the image with the correct dimensions', done => {
-
     const check = () => {
-
       const star = ox.fetch.image('star');
 
       chai.expect(star.width).to.equal(270) && chai.expect(star.height).to.equal(256);
 
       done();
-
     };
 
     ox.onComplete.add(check);
@@ -48,23 +39,15 @@ describe('Loading and retrieving image assets', () => {
     ox.image('star', './assets/star.png');
 
     ox.start();
-
   });
 
-});
-
-describe('Loading and retrieving audio assets', () => {
-
   it('should load and retrieve an audio clip as an HTML audio element', done => {
-
     const check = () => {
-
       const voice = ox.fetch.audio('voice');
 
       chai.expect(voice instanceof HTMLAudioElement).to.be.true;
 
       done();
-
     };
 
     ox.onComplete.add(check);
@@ -72,23 +55,15 @@ describe('Loading and retrieving audio assets', () => {
     ox.audio('voice', './assets/123.m4a');
 
     ox.start();
-
   });
 
-});
-
-describe('Loading and retrieving video assets', () => {
-
   it('should load and retrieve a video clip', done => {
-
     const check = () => {
-
       const lol = ox.fetch.video('lol');
 
       chai.expect(lol instanceof HTMLVideoElement).to.be.true;
 
       done();
-
     };
 
     ox.onComplete.add(check);
@@ -96,15 +71,9 @@ describe('Loading and retrieving video assets', () => {
     ox.video('lol', './assets/game.mp4');
 
     ox.start();
-
   });
 
-});
-
-describe('Loading and retrieving text assets', () => {
-
   it('should load and retrieve a text file', done => {
-
     const check = () => {
 
       const hw = ox.fetch.text('hw');
@@ -112,7 +81,6 @@ describe('Loading and retrieving text assets', () => {
       chai.expect(hw).to.equal('Hello World!');
 
       done();
-
     };
 
     ox.onComplete.add(check);
@@ -120,17 +88,10 @@ describe('Loading and retrieving text assets', () => {
     ox.text('hw', './assets/helloworld.txt');
 
     ox.start();
-
   });
 
-});
-
-describe('Loading and retrieving binary assets', () => {
-
   it('should load and retrieve a text file as binary', done => {
-
     const check = () => {
-
       const hw = ox.fetch.binary('hw');
 
       const expected = new Uint8Array(12);
@@ -151,7 +112,6 @@ describe('Loading and retrieving binary assets', () => {
       chai.expect(hw).to.deep.equal(expected);
 
       done();
-
     };
 
     ox.onComplete.add(check);
@@ -159,23 +119,15 @@ describe('Loading and retrieving binary assets', () => {
     ox.binary('hw', './assets/helloworld.txt');
 
     ox.start();
-
   });
 
-});
-
-describe('Loading and retrieving JSON assets', () => {
-
   it('should load and retrieve a json file as an object', done => {
-
     const check = () => {
-
       const food = ox.fetch.json('food');
 
       chai.expect(food).to.deep.equal({ 'favorite-foods': { 'fruits': ['apple', 'orange'], 'pizza': ['chicken'] } });
 
       done();
-
     };
 
     ox.onComplete.add(check);
@@ -183,7 +135,17 @@ describe('Loading and retrieving JSON assets', () => {
     ox.json('food', './assets/favorite-foods.json');
 
     ox.start();
-
   });
 
+  it('should load no assets but complete the cycle anyways', done => {
+    const check = () => {
+      chai.expect(true).to.be.true;
+
+      done();
+    };
+
+    ox.onComplete.add(check);
+
+    ox.start();
+  });
 });

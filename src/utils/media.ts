@@ -12,7 +12,6 @@ import codecs from './codecs';
  * @returns {string} Returns the src of the asset that the browser is most likely capable of playing.
  */
 export function getPlayableMedia(type: string, srcs: Array<string>): string {
-
   let asset: (HTMLAudioElement | HTMLVideoElement);
 
   const isAudio: boolean = type === 'audio';
@@ -22,19 +21,13 @@ export function getPlayableMedia(type: string, srcs: Array<string>): string {
   else asset = document.createElement('video');
 
   for (const src of srcs) {
-
     const ext: string = src.slice(src.lastIndexOf('.') + 1);
 
     const codec: string = codecs[type][ext];
 
-    if (asset.canPlayType(codec) == 'probably' || asset.canPlayType(codec) == 'maybe') {
-
-      return src;
-
-    }
+    if (asset.canPlayType(codec) == 'probably' || asset.canPlayType(codec) == 'maybe') return src;
 
   }
 
   return '';
-
 }

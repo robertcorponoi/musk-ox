@@ -20,8 +20,6 @@ export default class Cache {
     /**
      * Adds an asset to the cache.
      *
-     * @since 0.1.0
-     *
      * @param {string} type The type of asset to add.
      * @param {string} key The key of the asset.
      * @param {HTMLElement} asset The actual asset to add.

@@ -123,9 +123,7 @@ export default class MuskOx {
 	 * @param {string} crossOrigin The crossOrigin option passed to MuskOx on initialization.
 	 */
   constructor(crossOrigin: string = '') {
-
     this._crossOrigin = crossOrigin;
-
   }
 
   /**
@@ -133,106 +131,72 @@ export default class MuskOx {
    * 
    * @returns {Cache}
    */
-  get cache(): Cache {
-
-    return this._cache;
-
-  }
+  get cache(): Cache { return this._cache; }
 
   /**
    * Returns the fetch module.
    * 
    * @returns {Fetch}
    */
-  get fetch(): Fetch {
-
-    return this._fetch;
-
-  }
+  get fetch(): Fetch { return this._fetch; }
 
 	/**
 	 * Returns the current loading progress.
 	 * 
 	 * @returns {number}
 	 */
-  get progress(): number {
-
-    return this._progress;
-
-  }
+  get progress(): number { return this._progress; }
 
   /**
    * Returns the onProgress signal.
    * 
    * @returns {Hypergiant}
    */
-  get onProgress(): Hypergiant {
-
-    return this._onProgress;
-
-  }
+  get onProgress(): Hypergiant { return this._onProgress; }
 
   /**
    * Returns the assetLoaded signal.
    * 
    * @returns {Hypergiant}
    */
-  get onLoad(): Hypergiant {
-
-    return this._onLoad;
-
-  }
+  get onLoad(): Hypergiant { return this._onLoad; }
 
   /**
    * Returns the onError signal.
    * 
    * @returns {Hypergiant}
    */
-  get onError(): Hypergiant {
-
-    return this._onError;
-
-  }
+  get onError(): Hypergiant { return this._onError; }
 
   /**
    * Returns the onComplete signal.
    * 
    * @returns {Hypergiant}
    */
-  get onComplete(): Hypergiant {
-
-    return this._onComplete;
-
-  }
+  get onComplete(): Hypergiant { return this._onComplete; }
 
 	/**
 	 * Takes the assets from the load queue and one by one it uses the appropriate  method to load it and then add it to the cache.
 	 */
   start() {
+    if (this._queue.length === 0) this._updateLoadStatus();
 
     for (const asset of this._queue) {
-
       switch (asset.type) {
-
         case 'image':
           this._loadDefault(asset);
           break;
-
         case 'audio':
         case 'video':
           this._loadCanPlayThrough(asset);
           break;
-
         case 'text':
         case 'binary':
         case 'json':
           this._loadXHR(asset);
           break;
-
       }
-
     }
-
   }
 
 	/**
@@ -243,9 +207,7 @@ export default class MuskOx {
 	 * @param {boolean} [replace=false] Indicates whether an image asset with the same key should be replaced in the cache or not.
 	 */
   image(key: string, src: string, replace: boolean = false) {
-
     this._addToQueue('image', key, src, replace);
-
   }
 
 	/**
@@ -258,9 +220,7 @@ export default class MuskOx {
 	 * @param {boolean} [replace=false] Indicates whether an audio asset with the same key should be replaced in the cache or not.
 	 */
   audio(key: string, srcs: Array<string>, replace: boolean = false) {
-
     this._addToQueue('audio', key, srcs, replace);
-
   }
 
 	/**
@@ -273,9 +233,7 @@ export default class MuskOx {
 	 * @param {boolean} [replace=false] Indicates whether a video asset with the same key should be replaced in the cache or not.
 	 */
   video(key: string, srcs: Array<string>, replace: boolean = false) {
-
     this._addToQueue('video', key, srcs, replace);
-
   }
 
 	/**
@@ -286,9 +244,7 @@ export default class MuskOx {
 	 * @param {boolean} [replace=false] Indicates whether a text asset with the same key should be replaced in the cache or not.
 	 */
   text(key: string, src: string, replace: boolean = false) {
-
     this._addToQueue('text', key, src, replace);
-
   }
 
 	/**
@@ -299,9 +255,7 @@ export default class MuskOx {
 	 * @param {boolean} [replace=false] Indicates whether a binary asset with the same key should be replaced in the cache or not.
 	 */
   binary(key: string, src: string, replace: boolean = false) {
-
     this._addToQueue('binary', key, src, replace);
-
   }
 
 	/**
@@ -312,9 +266,7 @@ export default class MuskOx {
    * @param {boolean} [replace=false] Indicates whether a JSON asset with the same key should be replaced in the cache or not.
 	 */
   json(key: string, src: string, replace: boolean = false) {
-
     this._addToQueue('json', key, src, replace);
-
   }
 
 	/**
@@ -329,13 +281,11 @@ export default class MuskOx {
 	 * @param {boolean} replace Indicates whether an asset with the same key should be replaced in the cache or not.
 	 */
   private _addToQueue(type: string, key: string, src: (string | Array<string>), replace: boolean) {
-
     const asset: Asset = { type: type, key: key, src: src };
 
     this._queue.push(asset);
 
     this._assetsToLoad++;
-
   }
 
 	/**
@@ -347,25 +297,19 @@ export default class MuskOx {
 	 * @param {Asset} asset The asset to load.
 	 */
   private _loadDefault(asset: Asset) {
-
     asset.data = new Image();
 
     asset.data.addEventListener('load', () => {
-
       this._cacheAsset(asset);
-
     }, false);
 
     asset.data.addEventListener('error', (err: string) => {
-
       this._handleAssetError(asset, err);
-
     }, false);
 
     asset.data.src = asset.src.toString();
 
     if (this._crossOrigin) asset.data.crossOrigin = this._crossOrigin;
-
   }
 
 	/**
@@ -377,7 +321,6 @@ export default class MuskOx {
 	 * @param {Asset} asset The asset to load.
 	 */
   private _loadCanPlayThrough(asset: Asset) {
-
     if (!Array.isArray(asset.src)) asset.src = [asset.src];
 
     if (asset.type === 'audio') asset.data = new Audio();
@@ -385,19 +328,14 @@ export default class MuskOx {
     else asset.data = document.createElement('video');
 
     asset.data.addEventListener('canplaythrough', () => {
-
       this._cacheAsset(asset);
-
     }, false);
 
     asset.data.addEventListener('error', (err: string) => {
-
       this._handleAssetError(asset, err);
-
     }, false);
 
     asset.data.src = media.getPlayableMedia(asset.type, asset.src);
-
   }
 
 	/**
@@ -408,39 +346,29 @@ export default class MuskOx {
 	 * @param {Asset} asset The asset to load.
 	 */
   private _loadXHR(asset: Asset) {
-
     asset.data = new XMLHttpRequest();
 
     asset.data.addEventListener('readystatechange', () => {
-
       if (asset.data.readyState == 4 && asset.data.status == 200) {
 
         switch (asset.type) {
-
           case 'text':
             asset.data = asset.data.responseText;
             break;
-
           case 'binary':
             const arrayBuffer = asset.data.response;
             if (arrayBuffer) asset.data = new Uint8Array(arrayBuffer);
             break;
-
           case 'json':
             asset.data = JSON.parse(asset.data.responseText);
             break;
         }
-
         this._cacheAsset(asset);
-
       }
-
     }, false);
 
     asset.data.addEventListener('error', (err: string) => {
-
       this._handleAssetError(asset, err);
-
     }, false);
 
     if (asset.type == 'binary') asset.data.responseType = 'arraybuffer';
@@ -448,7 +376,6 @@ export default class MuskOx {
     asset.data.open('GET', asset.src);
 
     asset.data.send();
-
   }
 
 	/**
@@ -459,13 +386,11 @@ export default class MuskOx {
 	 * @param {Asset} asset The loaded asset.
 	 */
   private _cacheAsset(asset: Asset) {
-
     this.cache.set(asset.type, asset.key, asset.data);
 
     this._assetsLoaded++;
 
     this._updateLoadStatus(asset);
-
   }
 
 	/**
@@ -478,10 +403,9 @@ export default class MuskOx {
    * 
 	 * @private
 	 * 
-	 * @param {Asset} asset The most recently loaded asset.
+	 * @param {Asset} [asset] The most recently loaded asset.
 	 */
-  private _updateLoadStatus(asset: Asset) {
-
+  private _updateLoadStatus(asset?: Asset) {
     this._progress = parseInt(((this._assetsLoaded / this._assetsToLoad) * 100).toFixed(0));
 
     this.onProgress.dispatch(this._progress);
@@ -489,7 +413,6 @@ export default class MuskOx {
     this.onLoad.dispatch(asset);
 
     if (this._assetsLoaded === this._assetsToLoad) this.onComplete.dispatch();
-
   }
 
   /**
@@ -501,9 +424,6 @@ export default class MuskOx {
    * @param {string} err The error that was dispatched.
    */
   private _handleAssetError(asset: Asset, err: string) {
-
     this.onError.dispatch(asset, err);
-
   }
-
 }
