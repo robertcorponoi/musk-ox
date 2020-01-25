@@ -45,6 +45,17 @@ export default class Fetch {
 	}
 
 	/**
+	 * Returns an audio buffer from the cache.
+	 * 
+	 * @param {string} key The key of the audio buffer to return.
+	 * 
+	 * @returns {AudioBuffer} Returns the audio buffer.
+	 */
+	audioBuffer(key: string): (AudioBuffer | undefined) {
+		return this._cache.get('audioBuffer', key);
+	}
+
+	/**
 	 * Returns a video asset from the cache.
 	 * 
 	 * @param {string} key The key of the video asset to return.
@@ -86,5 +97,17 @@ export default class Fetch {
 	 */
 	json(key: string): (HTMLElement | undefined) {
 		return this._cache.get('json', key);
+	}
+
+	/**
+	 * Returns an array buffer from the cache.
+	 * 
+	 * @param {string} key The key of the array buffer to return.
+	 * 
+	 * @returns {ArrayBuffer} Returns the array buffer.
+	 */
+	arrayBuffer(key: string): (ArrayBuffer | undefined) {
+		// @ts-ignore
+		return this._cache.get('arrayBuffer', key);
 	}
 }

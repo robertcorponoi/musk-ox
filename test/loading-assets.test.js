@@ -8,6 +8,8 @@ beforeEach(() => ox = new MuskOx());
 
 afterEach(() => ox = null);
 
+mocha.globals(['__VUE_DEVTOOLS_TOAST__']);
+
 describe('Loading and retrieving assets', () => {
   it('should load and retrieve an image asset as HTML image elements', done => {
     const check = () => {
@@ -133,6 +135,38 @@ describe('Loading and retrieving assets', () => {
     ox.onComplete.add(check);
 
     ox.json('food', './assets/favorite-foods.json');
+
+    ox.start();
+  });
+
+  it('should load and retrieve an audio asset as an array buffer', done => {
+    const check = () => {
+      const voice = ox.fetch.arrayBuffer('voice');
+
+      chai.expect(voice instanceof ArrayBuffer).to.be.true;
+
+      done();
+    };
+
+    ox.onComplete.add(check);
+
+    ox.arrayBuffer('voice', './assets/123.m4a');
+
+    ox.start();
+  });
+
+  it('should load and retrieve an audio asset as an audio buffer', done => {
+    const check = () => {
+      const voice = ox.fetch.audioBuffer('voice');
+
+      chai.expect(voice instanceof AudioBuffer).to.be.true;
+
+      done();
+    };
+
+    ox.onComplete.add(check);
+
+    ox.audioBuffer('voice', './assets/123.m4a');
 
     ox.start();
   });

@@ -51,11 +51,13 @@ and after that, a new instance can be initialized like so:
 const ox = new MuskOx();
 ```
 
-There is also currently one initialization parameter that allows you to specify a global cross origin policy for loading images from an external source. This is useful if you have a lot of assets coming from a single external source. If no value is specified, then it is left null and not used.
+As of 5.0.0 the single `crossOrigin` initialization parameter has been replaced with an options object:
 
-| param       | type   | description                                                      | default |
-|-------------|--------|------------------------------------------------------------------|---------|
-| crossOrigin | string | A cross origin policy to set on all assets that use cross origin | ''      |
+| param        | type         | description                                                                                                                                              | default            |
+|--------------|--------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| options      | Object       |                                                                                                                                                          |                    |
+| crossOrigin  | string       | A cross-origin property to set for all assets that use cross-origin.                                                                                     | ''                 |
+| audioContext | AudioContext | A reference to an existing AudioContext to use if creating web audio assets. If one is not assigned then a new instance of an AudioContext will be used. | new AudioContext() |
 
 The MuskOx asset loading system is split into three steps: defining assets to load, initiating the load, and retrieving loaded assets.
 
@@ -155,6 +157,20 @@ Using fallback sources:
 ox.audio('podcast', ['./recordings/2019-01-01.m4a', './recordings/2019-01-01.wav']);
 ```
 
+### **audioBuffer**
+
+Adds an audio asset to the load queue to load as an AudioBuffer.
+
+| param   | type                    | description                                                                                                                                                 | default |
+|---------|-------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| key     | string                  | A unique key which will be used to reference this audio buffer by when using it                                                                             |         |
+| src     | string                  | The path to the audio asset.                                                                                                                                |         |
+| replace | boolean                 | If set to true, this audio buffer will replace an existing audio buffer with the same key                                                                   | false   |
+
+```js
+ox.audioBuffer('podcast', './recordings/2019-01-01.m4a');
+```
+
 ### **video**
 
 Adds a video asset to the load queue.
@@ -219,6 +235,20 @@ Adds a JSON asset to the load queue. The JSON will be stored as a parsed object.
 ox.json('movies', './documents/favorite-movies.json');
 ```
 
+### **arrayBuffer**
+
+Adds an asset to load as an array buffer.
+
+| param   | type    | description                                                                                     | default |
+|---------|---------|-------------------------------------------------------------------------------------------------|---------|
+| key     | string  | A unique key which will be used to reference this array buffer by when using it                 |         |
+| src     | string  | The path to the asset.                                                                          |         |
+| replace | boolean | If set to true, this array buffer will replace an existing array buffer with the same key       | false   |
+
+```js
+ox.arrayBuffer('podcast', './podcasts/podcast-new.mp4');
+```
+
 ## **Step 2: Start Loading**
 
 After defining all of the assets that need to be loaded, you have to tell MuskOx that you're ready for it to actually load all of
@@ -279,6 +309,19 @@ Get a saved audio asset from the cache.
 const podcast = ox.fetch.audio('podcast');
 ```
 
+### **audioBuffer**
+
+Get a saved audio buffer from the cache.
+
+| param | type   | description                                          | default |
+|-------|--------|------------------------------------------------------|---------|
+| key   | string | The key assigned to the audio buffer when loading it |         |
+
+```js
+const podcast = ox.fetch.audioBuffer('podcast');
+```
+
+
 ### **video**
 
 Get a saved video asset from the cache.
@@ -325,6 +368,18 @@ Get a saved JSON asset from the cache.
 
 ```js
 const movies = ox.fetch.json('movies');
+```
+
+### **arrayBuffer**
+
+Get a saved arrayBuffer from the cache.
+
+| param | type   | description                                          | default |
+|-------|--------|------------------------------------------------------|---------|
+| key   | string | The key assigned to the array buffer when loading it |         |
+
+```js
+const podcast = ox.fetch.arrayBuffer('podcast');
 ```
 
 ## Properties

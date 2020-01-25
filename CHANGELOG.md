@@ -1,3 +1,10 @@
+5.0.0 / 2020-01-24
+==================
+* [FEATURE] Added ability to load asset as an ArrayBuffer.
+* [FEATURE] Added ability to load asset as an AudioBuffer (useful for web audio).
+* [FEATURE] Replaced `crossOrigin` initializer with an object that has a `crossOrigin` option and a `audioContext` option for passing in an existing audio context.
+* [DOCS] Updated the docs with new features and options changes.
+
 4.1.1 / 2020-01-13
 ==================
 * [MISC] Removed logo from this repo, added it to the graphics repository, and updated the reference in the README in this repo.

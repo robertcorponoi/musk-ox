@@ -6,6 +6,8 @@ import Fetch from './fetch/Fetch';
 import Cache from './cache/Cache';
 import * as media from './utils/media';
 
+import Options from './options/Options';
+
 import Hypergiant from 'hypergiant';
 
 /**
@@ -13,6 +15,14 @@ import Hypergiant from 'hypergiant';
  * so that they can be used whenever.
  */
 export default class MuskOx {
+  /**
+   * A reference to the options for this instance of MuskOx.
+   * 
+   * @private
+   * 
+   * @property {Options}
+   */
+  private _options: Options;
 
 	/**
 	 * A reference to the cache used to store assets.
@@ -58,15 +68,6 @@ export default class MuskOx {
    * @private
 	 */
   private _assetsToLoad: number = 0;
-
-  /**
-   * The crossOrigin option passed to MuskOx on initialization.
-   * 
-   * @private
-   * 
-   * @property {string}
-   */
-  private _crossOrigin: string;
 
 	/**
 	 * A percent value that represents the current loading progress.
@@ -117,13 +118,15 @@ export default class MuskOx {
    * 
    * @private
    */
-  private _onComplete: Hypergiant = new  Hypergiant();
+  private _onComplete: Hypergiant = new Hypergiant();
 
 	/**
-	 * @param {string} crossOrigin The crossOrigin option passed to MuskOx on initialization.
+	 * @param {Object} [options]
+   * @param {string} [options.crossOrigin=''] A cross-origin property to set for all assets that use cross-origin.
+   * @param {AudioContext} [options.audioContext=new AudioContext()] A reference to an existing AudioContext to use if creating web audio assets. If one is not assigned then a new instance of an AudioContext will be used.
 	 */
-  constructor(crossOrigin: string = '') {
-    this._crossOrigin = crossOrigin;
+  constructor(options: Object = {}) {
+    this._options = new Options(options);
   }
 
   /**
@@ -193,6 +196,8 @@ export default class MuskOx {
         case 'text':
         case 'binary':
         case 'json':
+        case 'arrayBuffer':
+        case 'audioBuffer':
           this._loadXHR(asset);
           break;
       }
@@ -213,7 +218,7 @@ export default class MuskOx {
 	/**
 	 * Adds an audio asset to the load queue.
 	 * 
-	 * Muliple `src` paths can be provided in case one or more are not supported by the user's browser.
+	 * Multiple `src` paths can be provided in case one or more are not supported by the user's browser.
 	 * 
 	 * @param {string} key A unique key to reference this audio asset by.
 	 * @param {string|Array<string>} src A path to the audio asset or an array of paths to an audio asset and its fallbacks.
@@ -221,6 +226,17 @@ export default class MuskOx {
 	 */
   audio(key: string, srcs: Array<string>, replace: boolean = false) {
     this._addToQueue('audio', key, srcs, replace);
+  }
+
+  /**
+   * Adds an AudioBuffer to the load queue.
+   * 
+   * @param {string} key A unique key to reference this audio buffer by.
+	 * @param {string} src A path to the audio asset.
+	 * @param {boolean} [replace=false] Indicates whether an audio buffer with the same key should be replaced in the cache or not.
+   */
+  audioBuffer(key: string, src: string, replace: boolean = false) {
+    this._addToQueue('audioBuffer', key, src, replace);
   }
 
 	/**
@@ -269,6 +285,19 @@ export default class MuskOx {
     this._addToQueue('json', key, src, replace);
   }
 
+  /**
+   * Loads an asset as an array buffer.
+   * 
+   * This can be useful for loading an audio asset to use with web audio.
+   * 
+   * @param {string} key A unique key to reference this array buffer asset by.
+   * @param {string} src The path to the asset.
+   * @param {boolean} [replace=false] Indicates whether an array buffer asset with the same key should be replaced in the cache or not.
+   */
+  arrayBuffer(key: string, src: string, replace: boolean = false) {
+    this._addToQueue('arrayBuffer', key, src, replace);
+  }
+
 	/**
 	 * Takes the supplied asset, creates an asset instance out of it, and
 	 * adds it to the load queue.
@@ -281,7 +310,11 @@ export default class MuskOx {
 	 * @param {boolean} replace Indicates whether an asset with the same key should be replaced in the cache or not.
 	 */
   private _addToQueue(type: string, key: string, src: (string | Array<string>), replace: boolean) {
-    const asset: Asset = { type: type, key: key, src: src };
+    const asset: Asset = {
+      type,
+      key,
+      src
+    };
 
     this._queue.push(asset);
 
@@ -309,7 +342,7 @@ export default class MuskOx {
 
     asset.data.src = asset.src.toString();
 
-    if (this._crossOrigin) asset.data.crossOrigin = this._crossOrigin;
+    if (this._options.crossOrigin) asset.data.crossOrigin = this._options.crossOrigin;
   }
 
 	/**
@@ -348,22 +381,45 @@ export default class MuskOx {
   private _loadXHR(asset: Asset) {
     asset.data = new XMLHttpRequest();
 
+    const loaded: Hypergiant = new Hypergiant();
+
+    loaded.add(() => this._cacheAsset(asset));
+
     asset.data.addEventListener('readystatechange', () => {
       if (asset.data.readyState == 4 && asset.data.status == 200) {
-
         switch (asset.type) {
           case 'text':
             asset.data = asset.data.responseText;
+
+            loaded.dispatch();
             break;
           case 'binary':
-            const arrayBuffer = asset.data.response;
+            let arrayBuffer = asset.data.response;
             if (arrayBuffer) asset.data = new Uint8Array(arrayBuffer);
+
+            loaded.dispatch();
             break;
           case 'json':
             asset.data = JSON.parse(asset.data.responseText);
+
+            loaded.dispatch();
+            break;
+          case 'arrayBuffer':
+            asset.data = asset.data.response;
+
+            loaded.dispatch();
+            break;
+          case 'audioBuffer':
+            const response: ArrayBuffer = asset.data.response;
+
+            this._options.audioContext!.decodeAudioData(response, (buffer: AudioBuffer) => {
+              asset.data = buffer;
+
+              loaded.dispatch();
+            });
             break;
         }
-        this._cacheAsset(asset);
+        //this._cacheAsset(asset);
       }
     }, false);
 
@@ -371,7 +427,7 @@ export default class MuskOx {
       this._handleAssetError(asset, err);
     }, false);
 
-    if (asset.type == 'binary') asset.data.responseType = 'arraybuffer';
+    if (asset.type == 'binary' || asset.type === 'arrayBuffer' || asset.type === 'audioBuffer') asset.data.responseType = 'arraybuffer';
 
     asset.data.open('GET', asset.src);
 

@@ -16,7 +16,7 @@ export default class Cache {
      *
      * @returns {HTMLElement|undefined} Returns the asset or undefined if it doesn't exist.
      */
-    get(type: string, key: string): (HTMLElement | undefined);
+    get(type: string, key: string): any;
     /**
      * Adds an asset to the cache.
      *
@@ -27,7 +27,7 @@ export default class Cache {
      *
      * @returns {boolean} Returns true if the asset was successfully added to the cache or false if the asset already exists and `replace` is set to false.
      */
-    set(type: string, key: string, asset: HTMLElement, replace?: boolean): boolean;
+    set(type: string, key: string, asset: any, replace?: boolean): boolean;
     /**
      * Checks to see if an asset exists in the cache.
      *

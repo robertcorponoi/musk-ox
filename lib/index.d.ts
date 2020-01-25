@@ -7,6 +7,14 @@ import Hypergiant from 'hypergiant';
  */
 export default class MuskOx {
     /**
+     * A reference to the options for this instance of MuskOx.
+     *
+     * @private
+     *
+     * @property {Options}
+     */
+    private _options;
+    /**
      * A reference to the cache used to store assets.
    *
    * @private
@@ -46,14 +54,6 @@ export default class MuskOx {
    * @private
      */
     private _assetsToLoad;
-    /**
-     * The crossOrigin option passed to MuskOx on initialization.
-     *
-     * @private
-     *
-     * @property {string}
-     */
-    private _crossOrigin;
     /**
      * A percent value that represents the current loading progress.
      *
@@ -101,9 +101,11 @@ export default class MuskOx {
      */
     private _onComplete;
     /**
-     * @param {string} crossOrigin The crossOrigin option passed to MuskOx on initialization.
+     * @param {Object} [options]
+   * @param {string} [options.crossOrigin=''] A cross-origin property to set for all assets that use cross-origin.
+   * @param {AudioContext} [options.audioContext=new AudioContext()] A reference to an existing AudioContext to use if creating web audio assets. If one is not assigned then a new instance of an AudioContext will be used.
      */
-    constructor(crossOrigin?: string);
+    constructor(options?: Object);
     /**
      * Returns the cache module.
      *
@@ -161,13 +163,21 @@ export default class MuskOx {
     /**
      * Adds an audio asset to the load queue.
      *
-     * Muliple `src` paths can be provided in case one or more are not supported by the user's browser.
+     * Multiple `src` paths can be provided in case one or more are not supported by the user's browser.
      *
      * @param {string} key A unique key to reference this audio asset by.
      * @param {string|Array<string>} src A path to the audio asset or an array of paths to an audio asset and its fallbacks.
      * @param {boolean} [replace=false] Indicates whether an audio asset with the same key should be replaced in the cache or not.
      */
     audio(key: string, srcs: Array<string>, replace?: boolean): void;
+    /**
+     * Adds an AudioBuffer to the load queue.
+     *
+     * @param {string} key A unique key to reference this audio buffer by.
+       * @param {string} src A path to the audio asset.
+       * @param {boolean} [replace=false] Indicates whether an audio buffer with the same key should be replaced in the cache or not.
+     */
+    audioBuffer(key: string, src: string, replace?: boolean): void;
     /**
      * Adds a video asset to the load queue.
      *
@@ -202,6 +212,16 @@ export default class MuskOx {
    * @param {boolean} [replace=false] Indicates whether a JSON asset with the same key should be replaced in the cache or not.
      */
     json(key: string, src: string, replace?: boolean): void;
+    /**
+     * Loads an asset as an array buffer.
+     *
+     * This can be useful for loading an audio asset to use with web audio.
+     *
+     * @param {string} key A unique key to reference this array buffer asset by.
+     * @param {string} src The path to the asset.
+     * @param {boolean} [replace=false] Indicates whether an array buffer asset with the same key should be replaced in the cache or not.
+     */
+    arrayBuffer(key: string, src: string, replace?: boolean): void;
     /**
      * Takes the supplied asset, creates an asset instance out of it, and
      * adds it to the load queue.
