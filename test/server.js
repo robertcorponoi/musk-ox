@@ -14,7 +14,8 @@ const contentTypes = {
   json: 'application/json',
   m4a: 'audio/m4a',
   txt: 'text/plain',
-  mp4: 'video/mp4'
+  mp4: 'video/mp4',
+  mp3: 'audio/mpeg'
 };
 
 app.listen(port);

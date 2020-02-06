@@ -1,3 +1,7 @@
+5.0.1 / 2020-02-06
+==================
+* [TEST] Fixed failing test for audio operations using mp3 files.
+
 5.0.0 / 2020-01-24
 ==================
 * [FEATURE] Added ability to load asset as an ArrayBuffer.

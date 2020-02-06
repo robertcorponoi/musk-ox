@@ -357,7 +357,6 @@ export default class MuskOx {
     if (!Array.isArray(asset.src)) asset.src = [asset.src];
 
     if (asset.type === 'audio') asset.data = new Audio();
-
     else asset.data = document.createElement('video');
 
     asset.data.addEventListener('canplaythrough', () => {

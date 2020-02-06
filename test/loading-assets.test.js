@@ -43,7 +43,7 @@ describe('Loading and retrieving assets', () => {
     ox.start();
   });
 
-  it('should load and retrieve an audio clip as an HTML audio element', done => {
+  it('should load and retrieve an audio clip (m4a) as an HTML audio element', done => {
     const check = () => {
       const voice = ox.fetch.audio('voice');
 
@@ -55,6 +55,22 @@ describe('Loading and retrieving assets', () => {
     ox.onComplete.add(check);
 
     ox.audio('voice', './assets/123.m4a');
+
+    ox.start();
+  });
+
+  it('should load and retrieve an audio clip (mp3) as an HTML audio element', done => {
+    const check = () => {
+      const voice = ox.fetch.audio('music');
+
+      chai.expect(voice instanceof HTMLAudioElement).to.be.true;
+
+      done();
+    };
+
+    ox.onComplete.add(check);
+
+    ox.audio('music', './assets/song.mp3');
 
     ox.start();
   });
@@ -155,7 +171,7 @@ describe('Loading and retrieving assets', () => {
     ox.start();
   });
 
-  it('should load and retrieve an audio asset as an audio buffer', done => {
+  it('should load and retrieve an audio asset (m4a) as an audio buffer', done => {
     const check = () => {
       const voice = ox.fetch.audioBuffer('voice');
 
@@ -167,6 +183,22 @@ describe('Loading and retrieving assets', () => {
     ox.onComplete.add(check);
 
     ox.audioBuffer('voice', './assets/123.m4a');
+
+    ox.start();
+  });
+
+  it('should load and retrieve an audio asset (mp3) as an audio buffer', done => {
+    const check = () => {
+      const voice = ox.fetch.audioBuffer('music');
+
+      chai.expect(voice instanceof AudioBuffer).to.be.true;
+
+      done();
+    };
+
+    ox.onComplete.add(check);
+
+    ox.audioBuffer('music', './assets/song.mp3');
 
     ox.start();
   });
